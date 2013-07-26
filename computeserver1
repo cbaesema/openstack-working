@@ -1,5 +1,5 @@
 #!/bin/bash
-hostname compute-server
+hostname compute-server01
 
 #host file
 rm -rf /etc/hosts
