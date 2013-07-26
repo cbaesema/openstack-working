@@ -134,11 +134,11 @@ $controller_node_internal      = $controller_node_address
 #
 # It is assumed that this interface has an IP Address associated with it
 # and is available and connected on every host in the OpenStack cluster
-$public_interface        	= 'eth0'
+$public_interface        	= 'eth1'
 # The external_interface is used for external connectivity in association
 # with the l3_agent external router interface, providing floating IPs
 # (this is only required on the network/controller node)
-$external_interface	 	= 'eth1'
+$external_interface	 	= 'eth0'
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each
 # node. The current assumption is that all nodes will be installed on the
