@@ -138,7 +138,7 @@ $public_interface        	= 'eth1'
 # The external_interface is used for external connectivity in association
 # with the l3_agent external router interface, providing floating IPs
 # (this is only required on the network/controller node)
-$external_interface	 	= 'eth0'
+$external_interface	 	= 'eth1'
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each
 # node. The current assumption is that all nodes will be installed on the

@@ -4,6 +4,7 @@ hostname control-server
 #host file
 rm -rf /etc/hosts
 cp /opt/openstack-working/hosts /etc/hosts
+chmod a-wx /etc/hosts
 
 #interface
 rm -rf /etc/network/interfaces
