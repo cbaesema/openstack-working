@@ -223,8 +223,8 @@ node 'build-node' inherits master-node {
   cobbler_node { "control-server":
     node_type => "control",
     mac => "00:11:22:33:44:55",
-    ip => "10.0.2.16",
-    power_address  => "10.0.2.16",
+    ip => "192.168.1.3",
+    power_address  => "192.168.1.3",
     power_user => "admin",
     power_password => "password",
     power_type => "ipmitool"
@@ -241,8 +241,8 @@ node 'build-node' inherits master-node {
   cobbler_node { "compute-server01":
     node_type => "compute",
     mac => "11:22:33:44:55:66",
-    ip => "10.0.2.17",
-    power_address  => "10.0.2.17",
+    ip => "192.168.1.4",
+    power_address  => "192.168.1.4",
     power_user => "admin",
     power_password => "password",
     power_type => "ipmitool"
@@ -290,12 +290,12 @@ node 'build-node' inherits master-node {
 # OpenStack swift proxy node.
 
 # Begin swift proxy node
-  cobbler_node { "swift-proxy":
-    node_type => "swift-proxy",
-    mac => "11:22:33:aa:bb:cc",
-    ip => "192.168.1.5",
-    power_address  => "192.168.1.5"
-  }
+#  cobbler_node { "swift-proxy":
+#    node_type => "swift-proxy",
+#    mac => "11:22:33:aa:bb:cc",
+#    ip => "192.168.1.5",
+#    power_address  => "192.168.1.5"
+#  }
 
 # This block defines the first swift storage server. Replace "swift-storage01"
 # with the host name of your first OpenStack swift storage node (note: the
@@ -306,26 +306,26 @@ node 'build-node' inherits master-node {
 # swift storage node.
 
 # Begin swift storage node
-  cobbler_node { "swift-storage01":
-    node_type => "swift-storage",
-    mac => "11:22:33:cc:bb:aa",
-    ip => "192.168.1.6",
-    power_address  => "192.168.1.6"
-  }
+#  cobbler_node { "swift-storage01":
+#    node_type => "swift-storage",
+#    mac => "11:22:33:cc:bb:aa",
+#    ip => "192.168.1.6",
+#    power_address  => "192.168.1.6"
+#  }
 
-  cobbler_node { "swift-storage02":
-    node_type => "swift-storage",
-    mac => "11:22:33:cc:bb:aa",
-    ip => "192.168.1.7",
-    power_address  => "192.168.1.7"
-  }
+#  cobbler_node { "swift-storage02":
+#    node_type => "swift-storage",
+#    mac => "11:22:33:cc:bb:aa",
+#    ip => "192.168.1.7",
+#    power_address  => "192.168.1.7"
+#  }
 
-  cobbler_node { "swift-storage03":
-    node_type => "swift-storage",
-    mac => "11:22:33:cc:bb:aa",
-    ip => "192.168.1.7",
-    power_address  => "192.168.1.7"
-  }
+#  cobbler_node { "swift-storage03":
+#    node_type => "swift-storage",
+#    mac => "11:22:33:cc:bb:aa",
+#    ip => "192.168.1.7",
+#    power_address  => "192.168.1.7"
+#  }
 
 
 
@@ -337,37 +337,37 @@ node 'build-node' inherits master-node {
 ### this block defines the ceph monitor nodes
 ### you will need to add a node type for each addtional mon node
 ### eg ceph-mon02, etc. This is due to their unique id requirements
-  cobbler_node { "ceph-mon01":
-    node_type     => "ceph-mon01",
-    mac           => "11:22:33:cc:bb:aa",
-    ip            => "192.168.1.8",
-    power_address => "192.168.1.8",
-  }
+#  cobbler_node { "ceph-mon01":
+#    node_type     => "ceph-mon01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.8",
+#    power_address => "192.168.1.8",
+#  }
 
 ### this block define ceph osd nodes
 ### add a new entry for each node
-  cobbler_node { "ceph-osd01":
-    node_type     => "ceph-osd01",
-    mac           => "11:22:33:cc:bb:aa",
-    ip            => "192.168.1.9",
-    power_address => "192.168.1.9",
-  }
+#  cobbler_node { "ceph-osd01":
+#    node_type     => "ceph-osd01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.9",
+#    power_address => "192.168.1.9",
+#  }
 
 
-  cobbler_node { "ceph-osd02":
-    node_type     => "ceph-osd01",
-    mac           => "11:22:33:cc:bb:aa",
-    ip            => "192.168.1.10",
-    power_address => "192.168.1.10",
-  }
+#  cobbler_node { "ceph-osd02":
+#    node_type     => "ceph-osd01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.10",
+#    power_address => "192.168.1.10",
+#  }
 
 
-  cobbler_node { "ceph-osd03":
-    node_type     => "ceph-osd01",
-    mac           => "11:22:33:cc:bb:aa",
-    ip            => "192.168.1.11",
-    power_address => "192.168.1.11",
-  }
+#  cobbler_node { "ceph-osd03":
+#    node_type     => "ceph-osd01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.11",
+#    power_address => "192.168.1.11",
+#  }
 
 ### End repeated nodes ###
 }
@@ -438,52 +438,52 @@ node 'compute-server01' inherits os_base {
 # of your first Swift proxy node.  It is generally not necessary
 # to modify the value of keystone_host, as it will default to the
 # address of your control node.
-node 'swift-proxy' inherits os_base {
-  class {'openstack::swift::proxy':
-    swift_local_net_ip  => $swift_proxy_address,
-    keystone_host       => $controller_node_address,
-    swift_user_password => $admin_password,
-    swift_admin_tenant  => 'admin',
-    swift_admin_user    => 'admin',
-    swift_hash_suffix   => $swift_hash,
-  }
-}
+#node 'swift-proxy' inherits os_base {
+#  class {'openstack::swift::proxy':
+#    swift_local_net_ip  => $swift_proxy_address,
+#    keystone_host       => $controller_node_address,
+#    swift_user_password => $admin_password,
+#    swift_admin_tenant  => 'admin',
+#    swift_admin_user    => 'admin',
+#    swift_hash_suffix   => $swift_hash,
+#  }
+#}
 
 # Swift Storage
 # Modify the swift_local_net_ip parameter to match the IP address of
 # your first Swift storage node.  Modify the storage_devices parameter
 # to set the list of disk devices to be formatted with XFS and used
 # for Swift storage.
-node 'swift-storage01' inherits os_base {
-  class {'openstack::swift::storage-node':
-    swift_zone => '1',
-    swift_local_net_ip => '192.168.1.6',
-    storage_type => 'disk',
-    swift_hash_suffix => $swift_hash,
-  }
-}
+#node 'swift-storage01' inherits os_base {
+#  class {'openstack::swift::storage-node':
+#    swift_zone => '1',
+#    swift_local_net_ip => '192.168.1.6',
+#    storage_type => 'disk',
+#    swift_hash_suffix => $swift_hash,
+#  }
+#}
 
 
 
-node 'swift-storage02' inherits os_base {
-  class {'openstack::swift::storage-node':
-    swift_zone => '1',
-    swift_local_net_ip => '192.168.1.7',
-    storage_type => 'disk',
-    swift_hash_suffix => $swift_hash,
-  }
-}
+#node 'swift-storage02' inherits os_base {
+#  class {'openstack::swift::storage-node':
+#    swift_zone => '1',
+#    swift_local_net_ip => '192.168.1.7',
+#    storage_type => 'disk',
+#    swift_hash_suffix => $swift_hash,
+#  }
+#}
 
 
 
-node 'swift-storage02' inherits os_base {
-  class {'openstack::swift::storage-node':
-    swift_zone => '1',
-    swift_local_net_ip => '192.168.1.8',
-    storage_type => 'disk',
-    swift_hash_suffix => $swift_hash,
-  }
-}
+#node 'swift-storage02' inherits os_base {
+#  class {'openstack::swift::storage-node':
+#    swift_zone => '1',
+#    swift_local_net_ip => '192.168.1.8',
+#    storage_type => 'disk',
+#    swift_hash_suffix => $swift_hash,
+#  }
+#}
 ### Repeat as needed ###
 # Copy the swift-storage01 node definition above and paste a copy here for
 # each additional OpenStack swift storage node in your cluster.  Modify
