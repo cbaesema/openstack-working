@@ -1,6 +1,12 @@
 #!/bin/bash
-hostname control-server
-./setproposed.py
-cd /etc/puppet/manifests
-./puppet_modules.py
-puppet apply -v site.pp
+hostname build-server
+
+#host file
+rm -rf /etc/hosts
+cp /opt/openstack-working/hosts /etc/hosts
+
+#interface
+rm -rf /etc/network/interfaces
+cp /opt/openstack-working/interfaces/controlserver/interfaces /etc/network
+ifup eth1
+
