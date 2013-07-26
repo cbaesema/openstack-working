@@ -9,6 +9,11 @@ git clone http://github.com/CiscoSystems/grizzly-manifests -b multi-node
 cp /opt/grizzly-manifests/manifests/* /etc/puppet/manifests
 cp /opt/grizzly-manifests/templates/* /etc/puppet/templates
 
+cp /opt/openstack-working/buildserver /usr/sbin
+cp /opt/openstack-working/controlserver /usr/sbin
+cp /opt/openstack-working/computeserver /usr/sbin
+
+
 #copy the site.pp in place
 cp /opt/openstack-working/site/site.pp /etc/puppet/manifests
 rm -rf /etc/apt/sources.list
