@@ -1,5 +1,5 @@
 #!/bin/bash
-hostname build-server
+hostname control-server
 
 #host file
 rm -rf /etc/hosts
