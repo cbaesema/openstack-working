@@ -1,5 +1,5 @@
 #!/bin/bash
-hostname swift-proxy
+hostname swift-proxy01
 
 #host file
 rm -rf /etc/hosts
