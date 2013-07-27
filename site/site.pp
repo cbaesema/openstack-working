@@ -112,7 +112,7 @@ $controller_node_internal      = $controller_node_address
 # If you have multiple Swift proxy nodes, this should be the address
 # of the VIP used to load-balance across the individual nodes. 
 # Uncommenting this variable will enable the keystone swift endpoint.
-# $swift_proxy_address           = '192.168.242.179'
+$swift_proxy_address           = '192.168.1.5'
 
 # These next two parameters specify the networking hardware used in each node
 # Current assumption is that all nodes have the same network interfaces and are
@@ -290,12 +290,12 @@ node 'build-node' inherits master-node {
 # OpenStack swift proxy node.
 
 # Begin swift proxy node
-#  cobbler_node { "swift-proxy":
-#    node_type => "swift-proxy",
-#    mac => "11:22:33:aa:bb:cc",
-#    ip => "192.168.1.5",
-#    power_address  => "192.168.1.5"
-#  }
+  cobbler_node { "swift-proxy":
+    node_type => "swift-proxy",
+    mac => "11:22:33:aa:bb:cc",
+    ip => "192.168.1.5",
+    power_address  => "192.168.1.5"
+  }
 
 # This block defines the first swift storage server. Replace "swift-storage01"
 # with the host name of your first OpenStack swift storage node (note: the
@@ -438,16 +438,16 @@ node 'compute-server01' inherits os_base {
 # of your first Swift proxy node.  It is generally not necessary
 # to modify the value of keystone_host, as it will default to the
 # address of your control node.
-#node 'swift-proxy' inherits os_base {
-#  class {'openstack::swift::proxy':
-#    swift_local_net_ip  => $swift_proxy_address,
-#    keystone_host       => $controller_node_address,
-#    swift_user_password => $admin_password,
-#    swift_admin_tenant  => 'admin',
-#    swift_admin_user    => 'admin',
-#    swift_hash_suffix   => $swift_hash,
-#  }
-#}
+node 'swift-proxy' inherits os_base {
+  class {'openstack::swift::proxy':
+    swift_local_net_ip  => $swift_proxy_address,
+    keystone_host       => $controller_node_address,
+    swift_user_password => $admin_password,
+    swift_admin_tenant  => 'admin',
+    swift_admin_user    => 'admin',
+    swift_hash_suffix   => $swift_hash,
+  }
+}
 
 # Swift Storage
 # Modify the swift_local_net_ip parameter to match the IP address of
