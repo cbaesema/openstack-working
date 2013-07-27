@@ -39,8 +39,8 @@ $ntp_servers	= ["time.ntp.org"]
 # Change these 5 parameters to define the IP address and other network 
 # settings of your build node.  The cobbler node *must* have this IP 
 # configured and it *must* be on the same network as the hosts to install.
-$cobbler_node_ip 	= '10.0.2.15'
-$node_subnet 		= '10.0.2.0'
+$cobbler_node_ip 	= '192.168.1.2'
+$node_subnet 		= '192.168.1.0'
 $node_netmask 		= '255.255.255.0'
 # This gateway is optional - if there's a gateway providing a default route,
 # specify it here.  If not, comment this line out.
@@ -93,14 +93,14 @@ $ucsm_port = '443'
 # will be your OpenStack control node.  Note that the $controller_hostname
 # should be in all lowercase letters due to a limitation of Puppet
 # (refer to http://projects.puppetlabs.com/issues/1168).
-$controller_node_address       = '10.0.2.16'
-$controller_node_network       = '10.0.2.0'
+$controller_node_address       = '192.168.1.3'
+$controller_node_network       = '192.168.1.0'
 $controller_hostname           = 'control-server'
 # Specify the network which should have access to the MySQL database on 
 # the OpenStack control node. Typically, this will be the same network as
 # defined in the controller_node_network parameter above. Use MySQL network
 # wild card syntax to specify the desired network.
-$db_allowed_network            = '10.0.2.%'
+$db_allowed_network            = '192.168.1.%'
 # These next two values typically do not need to be changed. They define the
 # network connectivity of the OpenStack controller.  This is the interface
 # used to connect to Horizon dashboard.
@@ -138,7 +138,7 @@ $public_interface        	= 'eth1'
 # The external_interface is used for external connectivity in association
 # with the l3_agent external router interface, providing floating IPs
 # (this is only required on the network/controller node)
-$external_interface	 	= 'eth0'
+$external_interface	 	= 'eth1'
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each
 # node. The current assumption is that all nodes will be installed on the
@@ -223,8 +223,8 @@ node 'build-node' inherits master-node {
   cobbler_node { "control-server":
     node_type => "control",
     mac => "00:11:22:33:44:55",
-    ip => "10.0.2.16",
-    power_address  => "10.0.2.16",
+    ip => "192.168.1.3",
+    power_address  => "192.168.1.3",
     power_user => "admin",
     power_password => "password",
     power_type => "ipmitool"
@@ -241,8 +241,8 @@ node 'build-node' inherits master-node {
   cobbler_node { "compute-server01":
     node_type => "compute",
     mac => "11:22:33:44:55:66",
-    ip => "10.0.2.17",
-    power_address  => "10.0.2.17",
+    ip => "192.168.1.4",
+    power_address  => "192.168.1.4",
     power_user => "admin",
     power_password => "password",
     power_type => "ipmitool"
@@ -290,11 +290,11 @@ node 'build-node' inherits master-node {
 # OpenStack swift proxy node.
 
 # Begin swift proxy node
-#  cobbler_node { "swift-proxy01":
+#  cobbler_node { "swift-proxy":
 #    node_type => "swift-proxy",
 #    mac => "11:22:33:aa:bb:cc",
-#    ip => "192.168.242.179",
-#    power_address  => "192.168.242.12"
+#    ip => "192.168.1.5",
+#    power_address  => "192.168.1.5"
 #  }
 
 # This block defines the first swift storage server. Replace "swift-storage01"
@@ -309,9 +309,25 @@ node 'build-node' inherits master-node {
 #  cobbler_node { "swift-storage01":
 #    node_type => "swift-storage",
 #    mac => "11:22:33:cc:bb:aa",
-#    ip => "192.168.242.180",
-#    power_address  => "192.168.242.13"
+#    ip => "192.168.1.6",
+#    power_address  => "192.168.1.6"
 #  }
+
+#  cobbler_node { "swift-storage02":
+#    node_type => "swift-storage",
+#    mac => "11:22:33:cc:bb:aa",
+#    ip => "192.168.1.7",
+#    power_address  => "192.168.1.7"
+#  }
+
+#  cobbler_node { "swift-storage03":
+#    node_type => "swift-storage",
+#    mac => "11:22:33:cc:bb:aa",
+#    ip => "192.168.1.7",
+#    power_address  => "192.168.1.7"
+#  }
+
+
 
 ### Repeat as needed ###
 # Make a copy of your swift storage node block above for each additional
@@ -324,8 +340,8 @@ node 'build-node' inherits master-node {
 #  cobbler_node { "ceph-mon01":
 #    node_type     => "ceph-mon01",
 #    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.242.180",
-#    power_address => "192.168.242.13",
+#    ip            => "192.168.1.8",
+#    power_address => "192.168.1.8",
 #  }
 
 ### this block define ceph osd nodes
@@ -333,8 +349,24 @@ node 'build-node' inherits master-node {
 #  cobbler_node { "ceph-osd01":
 #    node_type     => "ceph-osd01",
 #    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.242.181",
-#    power_address => "192.168.242.14",
+#    ip            => "192.168.1.9",
+#    power_address => "192.168.1.9",
+#  }
+
+
+#  cobbler_node { "ceph-osd02":
+#    node_type     => "ceph-osd01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.10",
+#    power_address => "192.168.1.10",
+#  }
+
+
+#  cobbler_node { "ceph-osd03":
+#    node_type     => "ceph-osd01",
+#    mac           => "11:22:33:cc:bb:aa",
+#    ip            => "192.168.1.11",
+#    power_address => "192.168.1.11",
 #  }
 
 ### End repeated nodes ###
@@ -406,7 +438,7 @@ node 'compute-server01' inherits os_base {
 # of your first Swift proxy node.  It is generally not necessary
 # to modify the value of keystone_host, as it will default to the
 # address of your control node.
-#node 'swift-proxy01' inherits os_base {
+#node 'swift-proxy' inherits os_base {
 #  class {'openstack::swift::proxy':
 #    swift_local_net_ip  => $swift_proxy_address,
 #    keystone_host       => $controller_node_address,
@@ -425,13 +457,33 @@ node 'compute-server01' inherits os_base {
 #node 'swift-storage01' inherits os_base {
 #  class {'openstack::swift::storage-node':
 #    swift_zone => '1',
-#    swift_local_net_ip => '192.168.242.180',
+#    swift_local_net_ip => '192.168.1.6',
 #    storage_type => 'disk',
-#    storage_devices => ['sdb','sdc','sdd'],
 #    swift_hash_suffix => $swift_hash,
 #  }
 #}
 
+
+
+#node 'swift-storage02' inherits os_base {
+#  class {'openstack::swift::storage-node':
+#    swift_zone => '1',
+#    swift_local_net_ip => '192.168.1.7',
+#    storage_type => 'disk',
+#    swift_hash_suffix => $swift_hash,
+#  }
+#}
+
+
+
+#node 'swift-storage02' inherits os_base {
+#  class {'openstack::swift::storage-node':
+#    swift_zone => '1',
+#    swift_local_net_ip => '192.168.1.8',
+#    storage_type => 'disk',
+#    swift_hash_suffix => $swift_hash,
+#  }
+#}
 ### Repeat as needed ###
 # Copy the swift-storage01 node definition above and paste a copy here for
 # each additional OpenStack swift storage node in your cluster.  Modify
