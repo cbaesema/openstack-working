@@ -306,12 +306,12 @@ node 'build-node' inherits master-node {
 # swift storage node.
 
 # Begin swift storage node
-#  cobbler_node { "swift-storage01":
-#    node_type => "swift-storage",
-#    mac => "11:22:33:cc:bb:aa",
-#    ip => "192.168.1.6",
-#    power_address  => "192.168.1.6"
-#  }
+  cobbler_node { "swift-storage01":
+    node_type => "swift-storage",
+    mac => "11:22:33:cc:bb:aa",
+    ip => "192.168.1.6",
+    power_address  => "192.168.1.6"
+  }
 
 #  cobbler_node { "swift-storage02":
 #    node_type => "swift-storage",
@@ -454,14 +454,14 @@ node 'swift-proxy' inherits os_base {
 # your first Swift storage node.  Modify the storage_devices parameter
 # to set the list of disk devices to be formatted with XFS and used
 # for Swift storage.
-#node 'swift-storage01' inherits os_base {
-#  class {'openstack::swift::storage-node':
-#    swift_zone => '1',
-#    swift_local_net_ip => '192.168.1.6',
-#    storage_type => 'disk',
-#    swift_hash_suffix => $swift_hash,
-#  }
-#}
+node 'swift-storage01' inherits os_base {
+  class {'openstack::swift::storage-node':
+    swift_zone => '1',
+    swift_local_net_ip => '192.168.1.6',
+    storage_type => 'disk',
+    swift_hash_suffix => $swift_hash,
+  }
+}
 
 
 
