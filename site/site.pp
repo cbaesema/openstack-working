@@ -337,37 +337,37 @@ node 'build-node' inherits master-node {
 ### this block defines the ceph monitor nodes
 ### you will need to add a node type for each addtional mon node
 ### eg ceph-mon02, etc. This is due to their unique id requirements
-#  cobbler_node { "ceph-mon01":
-#    node_type     => "ceph-mon01",
-#    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.1.8",
-#    power_address => "192.168.1.8",
-#  }
+  cobbler_node { "ceph-mon01":
+    node_type     => "ceph-mon01",
+    mac           => "11:22:33:cc:bb:aa",
+    ip            => "192.168.1.9",
+    power_address => "192.168.1.9",
+  }
 
 ### this block define ceph osd nodes
 ### add a new entry for each node
-#  cobbler_node { "ceph-osd01":
-#    node_type     => "ceph-osd01",
-#    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.1.9",
-#    power_address => "192.168.1.9",
-#  }
+  cobbler_node { "ceph-osd01":
+    node_type     => "ceph-osd01",
+    mac           => "11:22:33:cc:bb:aa",
+    ip            => "192.168.1.10",
+    power_address => "192.168.1.10",
+  }
 
 
-#  cobbler_node { "ceph-osd02":
-#    node_type     => "ceph-osd01",
-#    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.1.10",
-#    power_address => "192.168.1.10",
-#  }
+  cobbler_node { "ceph-osd02":
+    node_type     => "ceph-osd01",
+    mac           => "11:22:33:cc:bb:aa",
+    ip            => "192.168.1.11",
+    power_address => "192.168.1.11",
+  }
 
 
-#  cobbler_node { "ceph-osd03":
-#    node_type     => "ceph-osd01",
-#    mac           => "11:22:33:cc:bb:aa",
-#    ip            => "192.168.1.11",
-#    power_address => "192.168.1.11",
-#  }
+  cobbler_node { "ceph-osd03":
+    node_type     => "ceph-osd01",
+    mac           => "11:22:33:cc:bb:aa",
+    ip            => "192.168.1.12",
+    power_address => "192.168.1.12",
+  }
 
 ### End repeated nodes ###
 }
@@ -465,25 +465,25 @@ node 'swift-storage01' inherits os_base {
 
 
 
-#node 'swift-storage02' inherits os_base {
-#  class {'openstack::swift::storage-node':
-#    swift_zone => '1',
-#    swift_local_net_ip => '192.168.1.7',
-#    storage_type => 'disk',
-#    swift_hash_suffix => $swift_hash,
-#  }
-#}
+node 'swift-storage02' inherits os_base {
+  class {'openstack::swift::storage-node':
+    swift_zone => '1',
+    swift_local_net_ip => '192.168.1.7',
+    storage_type => 'disk',
+    swift_hash_suffix => $swift_hash,
+  }
+}
 
 
 
-#node 'swift-storage02' inherits os_base {
-#  class {'openstack::swift::storage-node':
-#    swift_zone => '1',
-#    swift_local_net_ip => '192.168.1.8',
-#    storage_type => 'disk',
-#    swift_hash_suffix => $swift_hash,
-#  }
-#}
+node 'swift-storage03' inherits os_base {
+  class {'openstack::swift::storage-node':
+    swift_zone => '1',
+    swift_local_net_ip => '192.168.1.8',
+    storage_type => 'disk',
+    swift_hash_suffix => $swift_hash,
+  }
+}
 ### Repeat as needed ###
 # Copy the swift-storage01 node definition above and paste a copy here for
 # each additional OpenStack swift storage node in your cluster.  Modify
@@ -516,40 +516,40 @@ node 'swift-storage01' inherits os_base {
 # ceph_release: specify the release codename to install the respective release.
 
 
-#$ceph_auth_type         = 'cephx'
-#$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
-#$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
-#$ceph_monitor_port      = '6789'
-#$ceph_monitor_address   = $::ipaddress
-#$ceph_cluster_network   = '192.168.242.0/24'
-#$ceph_public_network    = '192.168.242.0/24'
-#$ceph_public_interface  = 'eth2'
-#$ceph_cluster_interface = 'eth2'
-#$ceph_release           = 'cuttlefish'
+$ceph_auth_type         = 'cephx'
+$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
+$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
+$ceph_monitor_port      = '6789'
+$ceph_monitor_address   = $::ipaddress
+$ceph_cluster_network   = '192.168.1.0/24'
+$ceph_public_network    = '192.168.1.0/24'
+$ceph_public_interface  = 'eth1'
+$ceph_cluster_interface = 'eth1'
+$ceph_release           = 'cuttlefish'
 
 # this global path needs to be uncommented for puppet-ceph to work.
 # uncomment and define the proxy server if your nodes don't have direct
 # access to the internet. this is needed to obtain the latest ceph packages..
-#Exec {
-#  path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+Exec {
+  path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 #  environment => 'https_proxy=http://proxy-rtp-1.cisco.com:8080',
-#}
+}
 
 
-#node 'ceph-mon01' inherits os_base {
+node 'ceph-mon01' inherits os_base {
   # only mon0 should export the admin keys.
   # This means the following if statement is not needed on the additional mon nodes.
-#  if !empty($::ceph_admin_key) {
-#  @@ceph::key { 'admin':
-#    secret       => $::ceph_admin_key,
-#    keyring_path => '/etc/ceph/keyring',
-#  }
-#  }
+  if !empty($::ceph_admin_key) {
+    @@ceph::key { 'admin':
+      secret       => $::ceph_admin_key,
+      keyring_path => '/etc/ceph/keyring',
+    }
+   }
 
-  # each MON needs a unique id, you can start at 0 and increment as needed.
-#  class {'ceph_mon': id => 0 }
-#  class { 'ceph::apt::ceph': release => $::ceph_release }
-#}
+    # each MON needs a unique id, you can start at 0 and increment as needed.
+    class {'ceph_mon': id => 0 }
+    class { 'ceph::apt::ceph': release => $::ceph_release }
+}
 
 # Model each additional MON after the following. Remember to increment the id.
 # node 'ceph-mon02' inherits os_base {
@@ -559,24 +559,24 @@ node 'swift-storage01' inherits os_base {
 
 # This is the OSD node definition example. You will need to specify the public and cluster IP for each unique node.
 
-#node 'ceph-osd01' inherits os_base {
-#  class { 'ceph::conf':
-#    fsid            => $::ceph_monitor_fsid,
-#    auth_type       => $::ceph_auth_type,
-#    cluster_network => $::ceph_cluster_network,
-#    public_network  => $::ceph_public_network,
-#  }
-#  class { 'ceph::osd':
-#    public_address  => '192.168.242.3',
-#    cluster_address => '192.168.242.3',
-#  }
+node 'ceph-osd01' inherits os_base {
+  class { 'ceph::conf':
+    fsid            => $::ceph_monitor_fsid,
+    auth_type       => $::ceph_auth_type,
+    cluster_network => $::ceph_cluster_network,
+    public_network  => $::ceph_public_network,
+  }
+  class { 'ceph::osd':
+    public_address  => '192.168.242.3',
+    cluster_address => '192.168.242.3',
+  }
   # Specify the disk devices to use for OSD here.
   # Add a new entry for each device on the node that ceph should consume.
   # puppet agent will need to run four times for the device to be formatted,
   #   and for the OSD to be added to the crushmap.
-#  ceph::osd::device { '/dev/sdd': }
-#  class { 'ceph::apt::ceph': release => $::ceph_release }
-#}
+  ceph::osd::device { '/dev/sdd': }
+  class { 'ceph::apt::ceph': release => $::ceph_release }
+}
 
 
 ### End repeated nodes ###

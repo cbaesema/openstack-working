@@ -12,7 +12,9 @@ cp /opt/grizzly-manifests/templates/* /etc/puppet/templates
 cp /opt/openstack-working/buildserver /usr/sbin
 cp /opt/openstack-working/controlserver /usr/sbin
 cp /opt/openstack-working/computeserver1 /usr/sbin
-cp /opt/openstack-working/swiftproxy /usr/sbin
+cp /opt/openstack-working/swift* /usr/bin
+cp /opt/openstack-working/ceph* /usr/bin
+
 
 #copy the site.pp in place
 cp /opt/openstack-working/site/site.pp /etc/puppet/manifests

@@ -1,0 +1,13 @@
+#!/bin/bash
+hostname ceph-mon01
+
+#host file
+rm -rf /etc/hosts
+cp /opt/openstack-working/hosts /etc/hosts
+chmod a-wx /etc/hosts
+
+#interface
+rm -rf /etc/network/interfaces
+cp /opt/openstack-working/interfaces/cephmon1/interfaces /etc/network
+ifup eth1
+

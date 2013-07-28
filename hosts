@@ -17,3 +17,7 @@ ff02::2	ip6-allrouters
 192.168.1.6	swift-storage01.eau.wi.charter.com     swift-storage01
 192.168.1.7	swift-storage02.eau.wi.charter.com     swift-storage02
 192.168.1.8	swift-storage03.eau.wi.charter.com     swift-storage03
+192.168.1.9	ceph-mon01.eau.wi.charter.com          ceph-mon01
+192.168.1.10	ceph-osd01.eau.wi.charter.com          ceph-osd01
+192.168.1.11	ceph-osd02.eau.wi.charter.com          ceph-osd02
+192.168.1.12	ceph-osd03.eau.wi.charter.com          ceph-osd03
