@@ -520,7 +520,7 @@ $ceph_auth_type         = 'cephx'
 $ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
 $ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
 $ceph_monitor_port      = '6789'
-$ceph_monitor_address   = $::ipaddress
+$ceph_monitor_address   = '192.168.1.9'
 $ceph_cluster_network   = '192.168.1.0/24'
 $ceph_public_network    = '192.168.1.0/24'
 $ceph_public_interface  = 'eth1'
@@ -547,7 +547,7 @@ node 'ceph-mon01' inherits os_base {
    }
 
     # each MON needs a unique id, you can start at 0 and increment as needed.
-    class {'ceph_mon': id => 0 }
+    class {'ceph_mon': id => 0}
     class { 'ceph::apt::ceph': release => $::ceph_release }
 }
 
