@@ -11,9 +11,3 @@ cp /opt/grizzly-manifests/templates/* /etc/puppet/templates
 
 cp /opt/openstack-working/bin/* /usr/sbin
 
-
-#copy the site.pp in place
-cp /opt/openstack-working/site/site.pp /etc/puppet/manifests
-rm -rf /etc/apt/sources.list
-cp /opt/openstack-working/sources.list /etc/apt
-apt-get update

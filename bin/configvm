@@ -1,0 +1,108 @@
+#!/usr/bin/env python
+
+import sys,os
+
+  
+base_dir = "/opt/openstack-working"
+node_file = base_dir + "/nodes.txt"
+domain_file = base_dir + "/domain.txt"
+
+
+
+def get_domain():
+    if os.path.exists(domain_file):
+        lines = open(domain_file).readlines()
+        return lines[0].strip()
+    else:
+        print "domain.txt missing in " + domain_file
+
+
+#create the hosts file
+def write_hosts_file():
+    domain = get_domain()
+    header = open(base_dir + "/hosts").read()
+    lines = open(node_file).readlines()
+    content = ""
+    for line in lines:
+        fline = line.split()
+        content = content + fline[1].strip() + " " + fline[0].strip() 
+        content = content + "." + domain.strip() + "  " + fline[0].strip() 
+        content = content +  "\n"
+    fp = open("/etc/hosts","w") 
+    fp.write(header +  content)
+    fp.close()
+
+#create the network interfaces
+def create_interfaces(eth1):
+    content = open(base_dir + "/interfaces.txt").read()
+    content = content.replace('{ETH1_ADDR}',eth1)
+    fp = open('/etc/network/interfaces',"w")
+    fp.write(content)
+    fp.close()
+    os.system('ifdown eth1')
+    os.system('ifup eth1')
+
+def set_hostname(hostname):
+    os.system('hostname ' + hostname)
+
+
+def create_runpuppet():
+    lines = open(node_file).readlines()
+    for line in lines:
+        if line.strip().startswith('build'):
+            buildserver = line.split()[0].strip()
+            content = '#!/bin/bash' + "\n"
+            content = content + 'puppet agent --server ' + buildserver
+            content = content + ' --waitforcert 60 --test --pluginsync'
+            fp = open('/usr/sbin/runpuppet','w') 
+            fp.write(content + "\n")
+            fp.close()
+            os.system('chmod a+x /usr/sbin/runpuppet')
+
+#is build server
+def is_build(hostname):
+    if hostname.startswith('build'):
+        return True
+    else:
+        return False
+
+def copy_apt_sources():
+    os.system('rm -rf /etc/apt/sources.list')
+    os.system('cp ' + base_dir + '/sources.list /etc/apt')
+    os.system('apt-get update')
+
+#copy manifest and template files
+def copy_manifests():
+    os.system('cp /opt/grizzly-manifests/manifests/* /etc/puppet/manifests') 
+    os.system('cp /opt/grizzly-manifests/templates/* /etc/puppet/templates')
+    os.system('cp ' + base_dir + "/site.pp /etc/puppet/manifests")
+
+if not len(sys.argv) > 1:
+    print "node name requred example: configvm build-server01"
+    sys.exit()
+
+
+lines = open(node_file).readlines()
+for line in lines:
+  vals = line.strip().split()
+  if vals[0].strip() == sys.argv[1]:
+      print "updating apt sources.list"
+      copy_apt_sources()
+      print "writing hosts file"
+      write_hosts_file()
+      print "creating ethernet interfaces"
+      create_interfaces(vals[1])
+      print "ssetting host name " + vals[0].strip()
+      set_hostname(vals[0].strip())
+      print "create runpuppt script"
+      create_runpuppet()
+      if is_build(vals[0].strip()):
+          print "copy manifests and templates"
+          copy_manifests()    
+    
+      print "update complete"
+      sys.exit()
+
+print "given node not found it must be one in this list"
+for line in lines:
+    print "configvm " + line.split()[0] 

@@ -1,0 +1,11 @@
+build-server           192.168.1.2
+control-server         192.168.1.3
+compute-server01       192.168.1.4
+swift-proxy            192.168.1.5
+swift-storage01        192.168.1.6
+swift-storage02        192.168.1.7
+swift-storage03        192.168.1.8
+ceph-mon01             192.168.1.9
+ceph-osd01             192.168.1.10
+ceph-osd02             192.168.1.11
+ceph-osd03             192.168.1.12
