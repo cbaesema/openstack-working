@@ -347,7 +347,7 @@ node 'build-node' inherits master-node {
 ### this block define ceph osd nodes
 ### add a new entry for each node
   cobbler_node { "ceph-osd01":
-    node_type     => "ceph-osd01",
+    node_type     => "ceph-osd",
     mac           => "11:22:33:cc:bb:aa",
     ip            => "192.168.1.10",
     power_address => "192.168.1.10",
@@ -355,7 +355,7 @@ node 'build-node' inherits master-node {
 
 
   cobbler_node { "ceph-osd02":
-    node_type     => "ceph-osd01",
+    node_type     => "ceph-osd",
     mac           => "11:22:33:cc:bb:aa",
     ip            => "192.168.1.11",
     power_address => "192.168.1.11",
@@ -363,7 +363,7 @@ node 'build-node' inherits master-node {
 
 
   cobbler_node { "ceph-osd03":
-    node_type     => "ceph-osd01",
+    node_type     => "ceph-osd",
     mac           => "11:22:33:cc:bb:aa",
     ip            => "192.168.1.12",
     power_address => "192.168.1.12",
@@ -578,6 +578,45 @@ node 'ceph-osd01' inherits os_base {
   class { 'ceph::apt::ceph': release => $::ceph_release }
 }
 
+
+node 'ceph-osd02' inherits os_base {
+  class { 'ceph::conf':
+    fsid            => $::ceph_monitor_fsid,
+    auth_type       => $::ceph_auth_type,
+    cluster_network => $::ceph_cluster_network,
+    public_network  => $::ceph_public_network,
+  }
+  class { 'ceph::osd':
+    public_address  => '192.168.1.11',
+    cluster_address => '192.168.1.11',
+  }
+  # Specify the disk devices to use for OSD here.
+  # Add a new entry for each device on the node that ceph should consume.
+  # puppet agent will need to run four times for the device to be formatted,
+  #   and for the OSD to be added to the crushmap.
+  ceph::osd::device { '/dev/sdb': }
+  class { 'ceph::apt::ceph': release => $::ceph_release }
+}
+
+
+node 'ceph-osd03' inherits os_base {
+  class { 'ceph::conf':
+    fsid            => $::ceph_monitor_fsid,
+    auth_type       => $::ceph_auth_type,
+    cluster_network => $::ceph_cluster_network,
+    public_network  => $::ceph_public_network,
+  }
+  class { 'ceph::osd':
+    public_address  => '192.168.1.12',
+    cluster_address => '192.168.1.12',
+  }
+  # Specify the disk devices to use for OSD here.
+  # Add a new entry for each device on the node that ceph should consume.
+  # puppet agent will need to run four times for the device to be formatted,
+  #   and for the OSD to be added to the crushmap.
+  ceph::osd::device { '/dev/sdb': }
+  class { 'ceph::apt::ceph': release => $::ceph_release }
+}
 
 ### End repeated nodes ###
 
