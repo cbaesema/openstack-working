@@ -52,7 +52,8 @@ def create_runpuppet():
         if line.strip().startswith('build'):
             buildserver = line.split()[0].strip()
             content = '#!/bin/bash' + "\n"
-            content = content + 'puppet agent --server ' + buildserver
+            content = content + 'puppet agent --server ' + buildserver + '.'
+            content = content + get_domain()
             content = content + ' --waitforcert 60 --test --pluginsync'
             fp = open('/usr/sbin/runpuppet','w') 
             fp.write(content + "\n")
