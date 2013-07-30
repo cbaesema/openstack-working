@@ -1,0 +1,2 @@
+#!/bin/bash
+puppet agent --server build-server.eau.wi.charter.com --waitforcert 60 --test --pluginsync

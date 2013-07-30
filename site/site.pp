@@ -547,7 +547,7 @@ node 'ceph-mon01' inherits os_base {
    }
 
     # each MON needs a unique id, you can start at 0 and increment as needed.
-    class {'ceph_mon': id => 0 }
+    class {'ceph_mon': id => 0}
     class { 'ceph::apt::ceph': release => $::ceph_release }
 }
 
