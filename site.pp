@@ -574,7 +574,7 @@ node 'ceph-osd01' inherits os_base {
   # Add a new entry for each device on the node that ceph should consume.
   # puppet agent will need to run four times for the device to be formatted,
   #   and for the OSD to be added to the crushmap.
-  ceph::osd::device { '/dev/sdd': }
+  ceph::osd::device { '/dev/sdb': }
   class { 'ceph::apt::ceph': release => $::ceph_release }
 }
 
