@@ -520,7 +520,7 @@ $ceph_auth_type         = 'cephx'
 $ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
 $ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
 $ceph_monitor_port      = '6789'
-$ceph_monitor_address   = $::ipaddress
+$ceph_monitor_address   = '192.168.1.9'
 $ceph_cluster_network   = '192.168.1.0/24'
 $ceph_public_network    = '192.168.1.0/24'
 $ceph_public_interface  = 'eth1'
@@ -574,7 +574,7 @@ node 'ceph-osd01' inherits os_base {
   # Add a new entry for each device on the node that ceph should consume.
   # puppet agent will need to run four times for the device to be formatted,
   #   and for the OSD to be added to the crushmap.
-  ceph::osd::device { '/dev/sdd': }
+  ceph::osd::device { '/dev/sdb': }
   class { 'ceph::apt::ceph': release => $::ceph_release }
 }
 
