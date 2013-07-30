@@ -567,8 +567,8 @@ node 'ceph-osd01' inherits os_base {
     public_network  => $::ceph_public_network,
   }
   class { 'ceph::osd':
-    public_address  => '192.168.242.3',
-    cluster_address => '192.168.242.3',
+    public_address  => '192.168.1.10',
+    cluster_address => '192.168.1.1o',
   }
   # Specify the disk devices to use for OSD here.
   # Add a new entry for each device on the node that ceph should consume.
