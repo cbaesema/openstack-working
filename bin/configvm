@@ -54,7 +54,8 @@ def create_runpuppet():
             content = '#!/bin/bash' + "\n"
             content = content + 'puppet agent --server ' + buildserver + '.'
             content = content + get_domain()
-            content = content + ' --waitforcert 60 --test --pluginsync'
+            content = content + ' --waitforcert 60 --test --pluginsync '
+            content = content + '| tee /opt/puppetrun.log'
             fp = open('/usr/sbin/runpuppet','w') 
             fp.write(content + "\n")
             fp.close()
