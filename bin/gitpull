@@ -42,4 +42,31 @@ os.chdir('/opt/' + repo)
 print 'checking out pull'
 os.system('git fetch origin')
 os.system('git checkout pr/' + pullreq)
-print "complete"
+print "installing code"
+
+if repo.startswith('puppet-'):
+    modname = repo.replace('puppet-','')
+    os.system('cp -r /opt/' + repo + '/* /usr/share/puppet/modules/' + modname)
+    print "puppet code installed in " + '/usr/share/puppet/modules/' + modname
+    print "pull code installed and ready for testing"
+    sys.exit()
+
+if 'manifests' in repo:
+    cmd = 'cp -r /opt/' + repo 
+    cmd = cmd +  '/* /usr/share/puppet/manifests/* /etc/puppet/manifests'
+    os.system(cmd)
+    print 'manifest patch requested'
+    print 'copied manifests to /etc/puppet/manifests'
+    cmd = 'cp -r /opt/' + repo 
+    cmd = cmd +  '/* /usr/share/puppet/templates/* /etc/puppet/templates'
+    os.system(cmd)
+    print 'copied templates'
+    print 'pull code installed and ready for testing'
+    sys.exit()
+
+
+print "clone and pull request applied to repo located in /opt"
+print "manually install the code and beging testing"
+ 
+
+
