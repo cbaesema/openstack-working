@@ -7,7 +7,8 @@ homegit = 'CiscoSystems'
 repo = sys.argv[1].strip()
 branch = sys.argv[2].strip()
 pullreq = sys.argv[3].strip()
-
+gituser = "cbaesema"
+gitemail = "cbaesema@gmail.com"
 
 #pull a fresh copy of the repo
 print "pulling clone of repo"
@@ -64,6 +65,10 @@ if 'manifests' in repo:
     print 'pull code installed and ready for testing'
     sys.exit()
 
+print "setting git global user and password on clone"
+os.chdir('/opt/' + repo)
+os.system('git config --global user.name "' + gituser + '"')
+os.system('git config --global user.email "' + gitemail + '"')
 
 print "clone and pull request applied to repo located in /opt"
 print "manually install the code and beging testing"
