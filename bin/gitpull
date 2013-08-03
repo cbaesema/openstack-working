@@ -54,12 +54,12 @@ if repo.startswith('puppet-'):
 
 if 'manifests' in repo:
     cmd = 'cp -r /opt/' + repo 
-    cmd = cmd +  '/* /usr/share/puppet/manifests/* /etc/puppet/manifests'
+    cmd = cmd +  '/manifests/* /etc/puppet/manifests'
     os.system(cmd)
     print 'manifest patch requested'
     print 'copied manifests to /etc/puppet/manifests'
     cmd = 'cp -r /opt/' + repo 
-    cmd = cmd +  '/* /usr/share/puppet/templates/* /etc/puppet/templates'
+    cmd = cmd +  '/templates/* /etc/puppet/templates'
     os.system(cmd)
     print 'copied templates'
     print 'pull code installed and ready for testing'
