@@ -16,12 +16,24 @@ if os.path.exists('/opt/' + repo):
     print "remove local copy from /opt"
     os.system('rm -rf /opt/' + repo)
 
-os.chdir('/opt') 
+os.chdir('/opt')
+
+if os.path.isdir('/opt/' + repo):
+    os.system('rm -rf /opt/' + repo)
+
+ 
 print 'cloning repo'
 cmd = 'git clone http://github.com/' + homegit + '/' + repo + '.git -b '
 cmd = cmd + branch
  
 os.system(cmd)
+
+
+print "setting git global user and password on clone"
+os.chdir('/opt/' + repo)
+os.system('git config --global user.name "' + gituser + '"')
+os.system('git config --global user.email "' + gitemail + '"')
+
 
 #patch git config
 print 'patching git/config'
@@ -66,10 +78,6 @@ if 'manifests' in repo:
     sys.exit()
 
 print "setting git global user and password on clone"
-os.chdir('/opt/' + repo)
-os.system('git config --global user.name "' + gituser + '"')
-os.system('git config --global user.email "' + gitemail + '"')
-
 print "clone and pull request applied to repo located in /opt"
 print "manually install the code and beging testing"
  
