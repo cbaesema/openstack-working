@@ -174,7 +174,7 @@ $swift_hash              = 'swift_secret'
 # Nova DB connection
 $sql_connection          = "mysql://${nova_user}:${nova_db_password}@${controller_node_address}/nova"
 # Glance backend configuration, supports 'file', 'swift', or 'rbd'.
-$glance_backend      = 'rbd'
+$glance_backend      = 'swift'
 
 # Set this option to true to user RBD-backed glance. This will store your glance images in
 #   your ceph cluster.
@@ -497,7 +497,9 @@ node 'compute-server01' inherits os_base {
 node 'swift-proxy' inherits os_base {
   class {'openstack::swift::proxy':
     swift_local_net_ip  => $swift_proxy_address,
+    swift_proxy_net_ip  => $swift_proxy_address,
     keystone_host       => $controller_node_address,
+    controller_node_address => $controller_node_address,
     swift_user_password => $admin_password,
     swift_admin_tenant  => 'admin',
     swift_admin_user    => 'admin',
