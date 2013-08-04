@@ -687,21 +687,21 @@ node 'ceph-osd03' inherits os_base {
 ### Advanced Users Configuration ###
 # These four settings typically do not need to be changed.
 # In the default deployment, the build node functions as the DNS and static
-# DHCP server for the OpenStack nodes. These settings can be used if 
+# DHCP server for the OpenStack nodes. These settings can be used if
 # alternate configurations are needed.
 $node_dns       = "${cobbler_node_ip}"
-$ip 		= "${cobbler_node_ip}"
-$dns_service 	= "dnsmasq"
-$dhcp_service 	= "dnsmasq"
-$time_zone      = "UTC"
+$ip             = "${cobbler_node_ip}"
+$dns_service    = 'dnsmasq'
+$dhcp_service   = 'dnsmasq'
+$time_zone      = 'UTC'
 
 # Enable network interface bonding. This will only enable the bonding module
 # in the OS. It won't actually bond any interfaces. Edit the networking
 # interfaces template to set up interface bonds as required after setting
 # this to true should bonding be required.
-#$interface_bonding = 'true' 
+#$interface_bonding = 'true'
 
-# Enable ipv6 router edvertisement.
+# Enable ipv6 router advertisement.
 #$ipv6_ra = '1'
 
 # Adjust Quantum quotas
@@ -729,6 +729,21 @@ $quantum_quota_security_group_rule = '100'
 # a host to fail connecting before banning it.
 $max_connect_errors = '10'
 
+### modify disk partitioning ###
+# set expert_disk to true if you want to specify partition sizes,
+#  of which root and var are currently supported
+# if you do not want a separate /var from /, set enable_var to false
+# if you do not want extra disk space set aside in an LVM volume
+#  then set enable_vol_space to false (you likely want this true if you
+#  want to use iSCSI CINDER on the compute nodes, and you must set
+#  expert_disk to true to enable this.
+
+$expert_disk           = true
+$root_part_size        = 65536
+$var_part_size         = 1048576
+$enable_var            = true
+$enable_vol_space      = true
+
 # Select vif_driver and firewall_driver for quantum and quantum plugin
 # These two parameters can be changed if necessary to support more complex
 # network topologies as well as some Quantum plugins.
@@ -736,6 +751,10 @@ $max_connect_errors = '10'
 # when using Quantum with OVS.
 $libvirt_vif_driver      = 'nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver'
 $quantum_firewall_driver = 'quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'
+# If you don't want Quantum security groups when using OVS, comment out the
+# libvirt_vif_driver line above and uncomment the libvirt_vif_driver below
+# instead
+# $libvirt_vif_driver = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver'
 
 ### Puppet Parameters ###
 # These settings load other puppet components. They should not be changed.
@@ -746,5 +765,5 @@ import 'core'
 ## Simplifies debug when necessary.
 
 node default {
-  notify{"Default Node: Perhaps add a node definition to site.pp": }
+  notify{'Default Node: Perhaps add a node definition to site.pp': }
 }
