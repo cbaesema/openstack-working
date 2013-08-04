@@ -577,18 +577,18 @@ node 'swift-storage03' inherits os_base {
 # ceph_release: specify the release codename to install the respective release.
 
 
-#$ceph_auth_type         = 'cephx'
-#$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
-#$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
+$ceph_auth_type         = 'cephx'
+$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
+$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
 #AQDVGc5P0LXzIhAA5C020gbdrgypSFGUpG2cqQ==
-#$ceph_monitor_port      = '6789'
-#$ceph_monitor_address   = $::ipaddress
-#$ceph_cluster_network   = '192.168.242.0/24'
-#$ceph_public_network    = '192.168.242.0/24'
-#$ceph_release           = 'cuttlefish'
-#$cinder_rbd_user        = 'admin'
-#$cinder_rbd_pool        = 'volumes'
-#$cinder_rbd_secret_uuid = 'REPLACEME'
+$ceph_monitor_port      = '6789'
+$ceph_monitor_address   = $::ipaddress
+$ceph_cluster_network   = '192.168.242.0/24'
+$ceph_public_network    = '192.168.242.0/24'
+$ceph_release           = 'cuttlefish'
+$cinder_rbd_user        = 'admin'
+$cinder_rbd_pool        = 'volumes'
+$cinder_rbd_secret_uuid = 'REPLACEME'
 
 # this global path needs to be uncommented for puppet-ceph to work.
 # uncomment and define the proxy server if your nodes don't have direct
