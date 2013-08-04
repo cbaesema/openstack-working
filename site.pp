@@ -172,13 +172,60 @@ $swift_password          = 'openstack_swift_password'
 $swift_user              = 'openstack_swift_user'
 $swift_hash              = 'swift_secret'
 # Nova DB connection
-$sql_connection 	 = "mysql://${nova_user}:${nova_db_password}@${controller_node_address}/nova"
-# Glance backend configuration, supports 'file' or 'swift'.
-$glance_backend = 'file'
-# Quantum core plugin - use either OVS:
-$quantum_core_plugin = 'quantum.plugins.openvswitch.ovs_quantum_plugin.OVSQuantumPluginV2'
-#or the cisco plugin:
-#$quantum_core_plugin = 'quantum.plugins.cisco.network_plugin.PluginV2'
+$sql_connection          = "mysql://${nova_user}:${nova_db_password}@${controller_node_address}/nova"
+# Glance backend configuration, supports 'file', 'swift', or 'rbd'.
+$glance_backend      = 'file'
+
+# Set this option to true to user RBD-backed glance. This will store your glance images in
+#   your ceph cluster.
+# $glance_ceph_enabled = true
+# $glance_ceph_user    = 'admin'
+# $glance_ceph_pool    = 'images'
+
+###### Quantum plugins #######
+# Use either OVS (the default) or Cisco quantum plugin:
+# $quantum_core_plugin = 'ovs'
+# $quantum_core_plugin = 'cisco'
+# if neither is specified, OVS will be used
+
+# If using the Cisco plugin, use either OVS or n1k for virtualised l2
+# $cisco_vswitch_plugin = 'ovs'
+# $cisco_vswitch_plugin = 'n1k'
+# If neither is specified, OVS will be used
+
+# If using the Cisco plugin, Nexus hardware can be used for l2
+# $cisco_nexus_plugin = 'nexus'
+# By default this will not be used
+
+# If using the nexus sub plugin, specify the hardware layout by
+# using the following syntax:
+# $nexus_config = { 'SWITCH_IP' => { 'COMPUTE_NODE_NAME' : 'PORT' } }
+#
+# SWITCH_IP is the ip address of a nexus device
+# COMPUTE_NODE_NAME is the hostname of an openstack compute node
+# PORT is the port in the switch that compute node is plugged into
+
+# A more complete example with multiple switches and nodes:
+# 
+# $nexus_config = {'1.1.1.1' =>   {'compute1' => '1/1',
+#                                  'compute2' => '1/2' },
+#                  '2.2.2.2' =>   {'compute3' => '1/3',
+#                                  'compute4' => '1/4'}
+#                 }
+#
+
+# Set the nexus login credentials by creating a list
+# of switch_ip/username/password strings as per the example below:
+#
+# $nexus_credentials = ['1.1.1.1/nexus_username1/secret1',
+#                       '2.2.2.2/nexus_username2/secret2']
+#
+# At this time the / character cannot be used as a nexus
+# password.
+
+# The nexus plugin also requires the ovs plugin to be set to
+# vlan mode, which can be done by uncommenting the following line:
+# $tenant_network_type = 'vlan'
 
 ########### Test variables ############
 # Variables used to populate test script:
@@ -196,8 +243,11 @@ $cinder_controller_enabled     = true
 # Set to true to enable Cinder deployment to all compute nodes.
 $cinder_compute_enabled        = true
 
-# The cinder storage driver to use. Default is 'iscsi'.
+# The cinder storage driver to use Options are iscsi or rbd(ceph). Default is 'iscsi'.
 $cinder_storage_driver         = 'iscsi'
+
+# The cinder_ceph_enabled configures cinder to use rbd-backed volumes.
+# $cinder_ceph_enabled           = true
 
 
 ####### OpenStack Node Definitions #####
