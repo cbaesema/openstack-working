@@ -580,6 +580,7 @@ node 'swift-storage03' inherits os_base {
 #$ceph_auth_type         = 'cephx'
 #$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
 #$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
+#AQDVGc5P0LXzIhAA5C020gbdrgypSFGUpG2cqQ==
 #$ceph_monitor_port      = '6789'
 #$ceph_monitor_address   = $::ipaddress
 #$ceph_cluster_network   = '192.168.242.0/24'
