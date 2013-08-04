@@ -174,7 +174,7 @@ $swift_hash              = 'swift_secret'
 # Nova DB connection
 $sql_connection          = "mysql://${nova_user}:${nova_db_password}@${controller_node_address}/nova"
 # Glance backend configuration, supports 'file', 'swift', or 'rbd'.
-$glance_backend      = 'file'
+$glance_backend      = 'rbd'
 
 # Set this option to true to user RBD-backed glance. This will store your glance images in
 #   your ceph cluster.
@@ -238,10 +238,10 @@ $test_file_image_type = 'kvm'
 
 # Storage Configuration
 # Set to true to enable Cinder services.
-$cinder_controller_enabled     = true
+$cinder_controller_enabled     = false
 
 # Set to true to enable Cinder deployment to all compute nodes.
-$cinder_compute_enabled        = true
+$cinder_compute_enabled        = false
 
 # The cinder storage driver to use Options are iscsi or rbd(ceph). Default is 'iscsi'.
 $cinder_storage_driver         = 'iscsi'
