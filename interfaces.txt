@@ -11,7 +11,15 @@ iface eth0 inet dhcp
 
 auto eht1
 iface eth1 inet static
-address {ETH1_ADDR}
+address 192.168.1.{IP}
 netmask 255.255.255.0
 network 192.168.1.0
 broadcast 192.168.1.255
+
+
+auto eht2
+iface eth2 inet static
+address 192.168.2.{IP}
+netmask 255.255.255.0
+network 192.168.2.0
+broadcast 192.168.2.255

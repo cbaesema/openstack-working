@@ -25,22 +25,31 @@ def write_hosts_file():
     content = ""
     for line in lines:
         fline = line.split()
-        content = content + fline[1].strip() + " " + fline[0].strip() 
+        content = content + '192.168.1.' + fline[1].strip() 
+        content = content + " " + fline[0].strip() 
         content = content + "." + domain.strip() + "  " + fline[0].strip() 
         content = content +  "\n"
+
+        content = content + '192.168.2.' + fline[1].strip() 
+        content = content + "  pvt-" + fline[0].strip() 
+        content = content + "." + domain.strip() + "  pvt-" + fline[0].strip() 
+        content = content +  "\n"
+
     fp = open("/etc/hosts","w") 
     fp.write(header +  content)
     fp.close()
 
 #create the network interfaces
-def create_interfaces(eth1):
+def create_interfaces(ip):
     content = open(base_dir + "/interfaces.txt").read()
-    content = content.replace('{ETH1_ADDR}',eth1)
+    content = content.replace('{IP}',ip)
     fp = open('/etc/network/interfaces',"w")
     fp.write(content)
     fp.close()
     os.system('ifdown eth1')
     os.system('ifup eth1')
+    os.system('ifdown eth2')
+    os.system('ifup eth2')
 
 def set_hostname(hostname):
     os.system('hostname ' + hostname)
