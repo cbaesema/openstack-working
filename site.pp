@@ -458,6 +458,12 @@ node 'compute-server01' inherits os_base {
     internal_ip => '192.168.242.21',
     tunnel_ip   => '192.168.242.21',
   }
+  
+  if $::cinder_ceph_enabled {
+    class { 'coe::ceph::compute':
+      poolname => $::cinder_rbd_pool,
+    }
+  }
 }
 
 ### Repeat as needed ###
