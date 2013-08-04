@@ -138,7 +138,7 @@ $public_interface        	= 'eth1'
 # The external_interface is used for external connectivity in association
 # with the l3_agent external router interface, providing floating IPs
 # (this is only required on the network/controller node)
-$external_interface	 	= 'eth1'
+$external_interface	 	= 'eth2'
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each
 # node. The current assumption is that all nodes will be installed on the
@@ -751,12 +751,12 @@ $enable_vol_space      = true
 # network topologies as well as some Quantum plugins.
 # These default values are required for Quantum security groups to work
 # when using Quantum with OVS.
-$libvirt_vif_driver      = 'nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver'
-$quantum_firewall_driver = 'quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'
+#$libvirt_vif_driver      = 'nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver'
+#$quantum_firewall_driver = 'quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'
 # If you don't want Quantum security groups when using OVS, comment out the
 # libvirt_vif_driver line above and uncomment the libvirt_vif_driver below
 # instead
-# $libvirt_vif_driver = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver'
+ $libvirt_vif_driver = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver'
 
 ### Puppet Parameters ###
 # These settings load other puppet components. They should not be changed.
