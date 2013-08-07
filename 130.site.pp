@@ -558,7 +558,7 @@ node 'swift-storage01' inherits os_base {
     swift_zone         => '1',
     swift_local_net_ip => '192.168.1.6',
     storage_type       => 'disk',
-    storage_devices    => ['sdb',
+    storage_devices    => ['sdb'],
     swift_hash_suffix  => $swift_hash,
   }
 }
