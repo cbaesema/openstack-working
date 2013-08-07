@@ -553,25 +553,25 @@ node 'swift-storage01' inherits os_base {
   }
 }
 
-#node 'swift-storage02' inherits os_base {
-#  class {'openstack::swift::storage-node':
-#    swift_zone         => '2',
-#    swift_local_net_ip => '192.168.1.7',
-#    storage_type       => 'disk',
-#    storage_devices    => ['sdb'],
-#    swift_hash_suffix  => $swift_hash,
-#  }
-#}
+node 'swift-storage02' inherits os_base {
+  class {'openstack::swift::storage-node':
+    swift_zone         => '2',
+    swift_local_net_ip => '192.168.1.7',
+    storage_type       => 'disk',
+    storage_devices    => ['sdb'],
+    swift_hash_suffix  => $swift_hash,
+  }
+}
 
-#node 'swift-storage03' inherits os_base {
-#  class {'openstack::swift::storage-node':
-#    swift_zone         => '3',
-#    swift_local_net_ip => '192.168.1.8',
-#    storage_type       => 'disk',
-#    storage_devices    => ['sdb'],
-#    swift_hash_suffix  => $swift_hash,
-#  }
-#}
+node 'swift-storage03' inherits os_base {
+  class {'openstack::swift::storage-node':
+    swift_zone         => '3',
+    swift_local_net_ip => '192.168.1.8',
+    storage_type       => 'disk',
+    storage_devices    => ['sdb'],
+    swift_hash_suffix  => $swift_hash,
+  }
+}
 
 ### Repeat as needed ###
 # Copy the swift-storage01 node definition above and paste a copy here for
