@@ -535,7 +535,7 @@ node 'compute-server01' inherits os_base {
 # of your first Swift proxy node.  It is generally not necessary
 # to modify the value of keystone_host, as it will default to the
 # address of your control node.
-node 'swift-proxy01' inherits os_base {
+node 'swift-proxy' inherits os_base {
   class {'openstack::swift::proxy':
     swift_local_net_ip     => $swift_proxy_address,
     keystone_host          => $controller_node_address,
