@@ -434,8 +434,8 @@ node 'build-node' inherits master-node {
     power_address => "192.168.1.11",
   }
 
-  cobbler_node { "ceph-osd02":
-    node_type     => "ceph-osd02",
+  cobbler_node { "ceph-osd03":
+    node_type     => "ceph-osd03",
     mac           => "11:22:33:cc:bb:aa",
     ip            => "192.168.1.12",
     power_address => "192.168.1.12",
