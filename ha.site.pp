@@ -1,11 +1,8 @@
-$configure_network_interfaces=false
-$enable_monitoring=false
-
 # This document serves as an example of how to deploy
 # basic multi-node openstack environments.
 # In this scenario Quantum is using OVS with GRE Tunnels
 
-##########    Proxy Configuration ##########
+########### Proxy Configuration ##########
 # If you use an HTTP/HTTPS proxy, uncomment this setting and specify the
 # correct proxy URL.  If you do not use an HTTP/HTTPS proxy, leave this
 # setting commented out.
@@ -15,52 +12,64 @@ $proxy			= "http://proxy-rtp-1:8080"
 #
 # The package repos used to install openstack
 $package_repo = 'cisco_repo'
-
 # Alternatively, the upstream Ubuntu package from cloud archive can be used
 #$package_repo = 'cloud_archive'
 
 # If you are behind a proxy you may choose not to use our ftp distribution, and
 # instead try our http distribution location. Note the http location is not
 # a permanent location and may change at any time.
-#$location 		= "ftp://ftpeng.cisco.com/openstack/cisco"
+#$location = 'ftp://ftpeng.cisco.com/openstack'
 # Alternate, uncomment this one, and comment out the one above.
-$location		= "http://openstack-repo.cisco.com/openstack"
-$supplemental_repo      ="http://openstack-repo.cisco.com/openstack/cisco_supplemental"
+$location = 'http://openstack-repo.cisco.com/openstack'
+
+# Cisco also maintains a supplemental repository of packages that aren't
+# core to OpenStack itself and are not provided by operating system vendors.
+# The supplemental repository is provided as a convenience for those wishing
+# to reduce the count of repositories needed to bring up a cloud with
+# particular features (such as Ceph or highly available databases).
+# If you want to use the supplemental, uncomment one of the two lines
+# below.  If you have a local cache or mirror of the supplemental repo, change
+# the $supplemental_repo variable to the URL of your mirror.  If you don't
+# need the supplemental repo and prefer not to configure it at all, simply
+# comment out the line below.
+#$supplemental_repo = 'ftp://ftpeng.cisco.com/openstack/cisco_supplemental'
+$supplemental_repo = 'http://openstack-repo.cisco.com/openstack/cisco_supplemental'
+
 ########### Build Node (Cobbler, Puppet Master, NTP) ######
 # Change the following to the host name you have given your build node.
 # This name should be in all lower case letters due to a Puppet limitation
 # (refer to http://projects.puppetlabs.com/issues/1168).
-$build_node_name        = "cvf2-server-d1"
+$build_node_name        = 'cvf2-server-d1'
 
 ########### NTP Configuration ############
 # Change this to the location of a time server in your organization accessible
 # to the build server.  The build server will synchronize with this time
 # server, and will in turn function as the time server for your OpenStack
 # nodes.
-$ntp_servers	= ["10.81.254.131"]
+$ntp_servers    = ["10.81.254.131"]
 
 ########### Build Node Cobbler Variables ############
-# Change these 5 parameters to define the IP address and other network 
-# settings of your build node.  The cobbler node *must* have this IP 
+# Change these 5 parameters to define the IP address and other network
+# settings of your build node.  The cobbler node *must* have this IP
 # configured and it *must* be on the same network as the hosts to install.
-$cobbler_node_ip 	= '2.4.1.254'
-$node_subnet 		= '2.4.1.0'
-$node_netmask 		= '255.255.255.0'
+$cobbler_node_ip        = '2.4.1.254'
+$node_subnet            = '2.4.1.0'
+$node_netmask           = '255.255.255.0'
 # This gateway is optional - if there's a gateway providing a default route,
 # specify it here.  If not, comment this line out.
-#$node_gateway 		= '192.168.220.1'
+#$node_gateway           = '192.168.220.1'
 # This domain name will be the name your build and compute nodes use for the
 # local DNS.  It doesn't have to be the name of your corporate DNS - a local
 # DNS server on the build node will serve addresses in this domain - but if
 # it is, you can also add entries for the nodes in your corporate DNS
 # environment they will be usable *if* the above addresses are routeable
 # from elsewhere in your network.
-$domain_name 		= 'cisco.com'
+$domain_name            = 'cisco.com'
 # This setting likely does not need to be changed.
 # To speed installation of your OpenStack nodes, it configures your build
 # node to function as a caching proxy storing the Ubuntu install files used
 # to deploy the OpenStack nodes.
-$cobbler_proxy 		= "http://${cobbler_node_ip}:3142/"
+$cobbler_proxy          = "http://${cobbler_node_ip}:3142/"
 
 ####### Preseed File Configuration #######
 # This will build a preseed file called 'cisco-preseed' in
@@ -72,16 +81,15 @@ $cobbler_proxy 		= "http://${cobbler_node_ip}:3142/"
 # 1) admin_user
 # 2) password_crypted
 # 3) autostart_puppet -- whether the puppet agent will auto start
-# Default user is: localadmin 
-# Default SHA-512 hashed password is "ubuntu": 
-# $6$UfgWxrIv$k4KfzAEMqMg.fppmSOTd0usI4j6gfjs0962.JXsoJRWa5wMz8yQk4SfInn4.WZ3L/MCt5u.62tHDGB36EhiKF1
+# Default user is: localadmin
+# Default SHA-512 hashed password is "ubuntu":
 # To generate a new SHA-512 hashed password, run the following replacing
 # the word "password" with your new password. Then use the result as the
 # $password_crypted variable.
 # python -c "import crypt, getpass, pwd; print crypt.crypt('password', '\$6\$UfgWxrIv\$')"
-$admin_user 		= 'localadmin'
-$password_crypted 	= '$6$UfgWxrIv$k4KfzAEMqMg.fppmSOTd0usI4j6gfjs0962.JXsoJRWa5wMz8yQk4SfInn4.WZ3L/MCt5u.62tHDGB36EhiKF1'
-$autostart_puppet       = false
+$admin_user             = 'localadmin'
+$password_crypted       = '$6$UfgWxrIv$k4KfzAEMqMg.fppmSOTd0usI4j6gfjs0962.JXsoJRWa5wMz8yQk4SfInn4.WZ3L/MCt5u.62tHDGB36EhiKF1'
+$autostart_puppet       = true
 
 # If the setup uses the UCS B-series blades, enter the port on which the
 # ucsm accepts requests. By default the UCSM is enabled to accept requests
@@ -90,32 +98,42 @@ $autostart_puppet       = false
 $ucsm_port = '443'
 
 ########### OpenStack Variables ############
-# These values define parameters which will be used to deploy and configure 
+# These values define parameters which will be used to deploy and configure
 # OpenStack once Ubuntu is installed on your nodes.
 #
-# Change these next 3 parameters to the network settings of the node which 
-# will be your OpenStack control node.  Note that the $controller_hostname
-# should be in all lowercase letters due to a limitation of Puppet
-# (refer to http://projects.puppetlabs.com/issues/1168).
+# Change the following parameters to the network settings of the nodes that 
+# will be your OpenStack control nodes.  Note that hostnames should be in 
+# all lowercase letters due to the following Puppet limitation:
+# refer to http://projects.puppetlabs.com/issues/1168
+#
 # The virtual IP address used for your Controller Cluster.
 $controller_cluster_vip        = '2.4.1.253'
 
 # The Virtual Hostname of the Controller Cluster
 $controller_vip_hostname       = 'control'
-$controller_hostname = $controller_vip_hostname
 
 # The actual address and hostname of the primary controller
-$controller01_ip               = '2.4.1.2'
+$controller01_ip               = '2.4.1.10'
 $controller01_hostname         = 'control01'
 
 # The actual address and hostname of the secondary controller
-$controller02_ip               = '2.4.1.3'
+$controller02_ip               = '2.4.1.11'
 $controller02_hostname         = 'control02'
 
 # The actual address and hostname of the tertiary controller
-$controller03_ip               = '2.4.1.4'
+$controller03_ip               = '2.4.1.13'
 $controller03_hostname         = 'control03'
 
+# Addresses Used for backwards Compatibiltiy
+$controller_hostname           = $controller_vip_hostname
+$controller_node_public        = $controller_cluster_vip
+$controller_node_internal      = $controller_cluster_vip
+
+# Change the following parameters to the network settings of the nodes that 
+# will be your Swift proxy nodes.  Note that hostnames should be in 
+# all lowercase letters due to the following Puppet limitation:
+# refer to http://projects.puppetlabs.com/issues/1168
+#
 # The Virtual Swift Proxy Hostname and IP address
 $swiftproxy_vip_hostname       = 'swiftproxy'
 $swiftproxy_cluster_vip        = '2.1.4.252'
@@ -128,34 +146,27 @@ $swiftproxy02_hostname         = 'swiftproxy02'
 
 # External-facing Swift Proxy Network definitions.  
 # Create additional node definitions as required.
-$swiftproxy01_public_net_ip   = '192.168.2.100'
-$swiftproxy02_public_net_ip   = '192.168.2.101'
+$swiftproxy01_public_net_ip   = '192.168.2.89'
+$swiftproxy02_public_net_ip   = '192.168.2.90'
 
 # Internal Storage Network definitions.
 # Create additional node definitions as required.
-$swiftproxy01_local_net_ip    = '2.4.1.5'
-$swiftproxy02_local_net_ip    = '2.4.1.6'
-$swift01_local_net_ip         = '2.4.1.7'
-$swift02_local_net_ip         = '2.4.1.8'
-$swift03_local_net_ip         = '2.4.1.9'
+$swiftproxy01_local_net_ip    = '2.1.4.8'
+$swiftproxy02_local_net_ip    = '2.1.4.9'
+$swift01_local_net_ip         = '2.1.4.5'
+$swift02_local_net_ip         = '2.1.4.6'
+$swift03_local_net_ip         = '2.1.4.7'
 $swift_local_net_mask         = '255.255.255.0'
 
 # Memcached definitions used by Proxy Nodes.  
 # Create additional definitions if you have more than 2 Proxy Nodes.
 $swift_memcache_servers  = ["${swiftproxy01_local_net_ip}:11211", "${swiftproxy02_local_net_ip}:11211"]
 
-# Specify the network which should have access to the MySQL database on 
+# Specify the network which should have access to the MySQL database on
 # the OpenStack control node. Typically, this will be the same network as
 # defined in the controller_node_network parameter above. Use MySQL network
 # wild card syntax to specify the desired network.
-#$db_allowed_network            = ['192.168.220.%', '127.0.0.1']
-
-# These next two values typically do not need to be changed. They define the
-# network connectivity of the OpenStack controller.  This is the interface
-# used to connect to Horizon dashboard.
-$controller_node_public        = $controller_node_address
-# This is the interface used for external backend communication.
-$controller_node_internal      = $controller_node_address
+$db_allowed_network      = ['192.168.22.%', '127.0.0.1','2.1.4.%']
 
 # These next two parameters specify the networking hardware used in each node
 # Current assumption is that all nodes have the same network interfaces and are
@@ -167,21 +178,21 @@ $controller_node_internal      = $controller_node_address
 #      be used for API Access, for the Horizon UI, and as an endpoint
 #      for the default GRE tunnel mechanism used in the OVS network
 #      configuration.
-#   b) The external_interface is used to provide a Layer2 path for 
+#   b) The external_interface is used to provide a Layer2 path for
 #      the l3_agent external router interface.  It is expected that
 #      this interface be attached to an upstream device that provides
 #      a L3 router interface, with the default router configuration
-#      assuming that the first non "network" address in the external 
+#      assuming that the first non "network" address in the external
 #      network IP subnet will be used as the default forwarding path
 #      if no more specific host routes are added.
 #
 # It is assumed that this interface has an IP Address associated with it
 # and is available and connected on every host in the OpenStack cluster
-$public_interface        = 'eth2'
+$public_interface        = 'eth02'
 # The external_interface is used for external connectivity in association
 # with the l3_agent external router interface, providing floating IPs
 # (this is only required on the network/controller node)
-$external_interface	 = 'eth0'
+$external_interface      = 'eth0'
 
 # This is the interface used by Swift Proxy and Storange nodes
 # for the private storage network.
@@ -191,6 +202,7 @@ $storage_interface       = 'eth0.222'
 # These VLANs must be provisioned on the physical network
 # and extended to Compute and Controller Nodes.
 $vlan_ranges             = '223:225'
+
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each
 # node. The current assumption is that all nodes will be installed on the
@@ -203,41 +215,103 @@ $install_drive           = '/dev/sda'
 # be changed for any production deployment.
 $admin_email             = 'root@localhost'
 $admin_password          = 'Cisco123'
-$services_tenant         = 'services'
 $keystone_db_password    = 'keystone_db_pass'
 $keystone_admin_token    = 'keystone_admin_token'
-$mysql_root_password     = 'mysql_db_pass'
-$puppet_mysql_password   = 'ubuntu'
+$services_tenant         = 'services'
 $galera_monitor_password = 'monitor_pass'
 $wsrep_sst_password      = 'wsrep_password'
+$mysql_root_password     = 'mysql_db_pass'
 $nova_user               = 'nova'
 $nova_db_password        = 'nova_pass'
 $nova_user_password      = 'nova_pass'
 $libvirt_type            = 'kvm'
 $glance_db_password      = 'glance_pass'
 $glance_user_password    = 'glance_pass'
+$glance_sql_connection   = "mysql://glance:${glance_db_password}@${controller_node_address}/glance"
+$cinder_user             = 'cinder'
 $cinder_user_password    = 'cinder_pass'
 $cinder_db_password      = 'cinder_pass'
 $quantum_user_password   = 'quantum_pass'
 $quantum_db_password     = 'quantum_pass'
 $rabbit_password         = 'openstack_rabbit_password'
 $rabbit_user             = 'openstack_rabbit_user'
-$swift_password          = 'swift_pass'
 $swift_user              = 'swift'
+$swift_password          = 'swift_pass'
 $swift_hash              = 'swift_secret'
-$horizon_secret_key      = 'horizon_pass'
+# Nova DB connection
+$sql_connection          = "mysql://${nova_user}:${nova_db_password}@${controller_node_address}/nova"
+# Glance backend configuration, supports 'file', 'swift', or 'rbd'.
+# Note: As of the G.2 release, only Swift is supported for HA deployments.
+$glance_backend          = 'swift'
 
-# Logging Levels. Set to true to enable
-# debug-level and/or verbose-level logging:
-$verbose = false
-$debug   = false
- 
+# Note: Ceph is not supported for HA deployments as of the G.2 release.
+# Set this option to true to use RBD-backed glance. This will store
+# your glance images in your ceph cluster.
+# $glance_ceph_enabled = true
+# $glance_ceph_user    = 'admin'
+# $glance_ceph_pool    = 'images'
+
+# If you are using a controller node as a ceph MON node then you
+#   need to also set this to true to enable glance on ceph.
+#   Also ensure that the controller node stanze contains the mon
+#   class declarations.
+# $controller_has_mon = true
+
+# If you are using compute hosts as ceph OSD servers then you
+#   need to set this to true
+# $osd_on_compute = true
+
+###### Quantum plugins #######
+# Use either OVS (the default) or Cisco quantum plugin:
+# $quantum_core_plugin = 'ovs'
+# $quantum_core_plugin = 'cisco'
+# if neither is specified, OVS will be used
+
+# If using the Cisco plugin, use either OVS or n1k for virtualised l2
+# $cisco_vswitch_plugin = 'ovs'
+# $cisco_vswitch_plugin = 'n1k'
+# If neither is specified, OVS will be used
+
+# If using the Cisco plugin, Nexus hardware can be used for l2
+# $cisco_nexus_plugin = 'nexus'
+# By default this will not be used
+
+# If using the nexus sub plugin, specify the hardware layout by
+# using the following syntax:
+# $nexus_config = { 'SWITCH_IP' => { 'COMPUTE_NODE_NAME' : 'PORT' } }
+#
+# SWITCH_IP is the ip address of a nexus device
+# COMPUTE_NODE_NAME is the hostname of an openstack compute node
+# PORT is the port in the switch that compute node is plugged into
+
+# A more complete example with multiple switches and nodes:
+# 
+# $nexus_config = {'1.1.1.1' =>   {'compute1' => '1/1',
+#                                  'compute2' => '1/2' },
+#                  '2.2.2.2' =>   {'compute3' => '1/3',
+#                                  'compute4' => '1/4'}
+#                 }
+#
+
+# Set the nexus login credentials by creating a list
+# of switch_ip/username/password strings as per the example below:
+#
+# $nexus_credentials = ['1.1.1.1/nexus_username1/secret1',
+#                       '2.2.2.2/nexus_username2/secret2']
+#
+# At this time the / character cannot be used as a nexus
+# password.
+
+# The nexus plugin also requires the ovs plugin to be set to
+# vlan mode, which can be done by uncommenting the following line:
+# $tenant_network_type = 'vlan'
+
 ########### Test variables ############
 # Variables used to populate test script:
 # /tmp/test_nova.sh
 #
 # Image to use for tests. Accepts 'kvm' or 'cirros'.
-$test_file_image_type = 'cirros'
+$test_file_image_type          = 'cirros'
 
 #### end shared variables #################
 
@@ -248,39 +322,26 @@ $cinder_controller_enabled     = true
 # Set to true to enable Cinder deployment to all compute nodes.
 $cinder_compute_enabled        = true
 
-# The cinder storage driver to use. Default is 'iscsi'.
+# The cinder storage driver to use Options are iscsi or rbd(ceph). Default
+# is 'iscsi'.
 $cinder_storage_driver         = 'iscsi'
 
-# Other drivers exist for cinder. Here are examples on how to enable them.
-#
-# NetApp iSCSI Driver
-# $cinder_storage_driver = 'netapp'
-# $netapp_wsdl_url       = ''
-# $netapp_login          = ''
-# $netapp_password       = ''
-#
-# NFS
-# share information is stored in flat text file specified in 
-# $nfs_shares_config.  The format for this file is "hostname:/mountpoint",
-# e.g. "192.168.2.55:/myshare", with only one entry per line.
-#
-# $cinder_storage_driver = 'nfs'
-# $nfs_shares_config     = '/etc/cinder/shares.conf'
-
+# The cinder_ceph_enabled configures cinder to use rbd-backed volumes.
+# $cinder_ceph_enabled           = true
 
 
 ####### OpenStack Node Definitions #####
-# This section is used to define the hardware parameters of the nodes 
+# This section is used to define the hardware parameters of the nodes
 # which will be used for OpenStack. Cobbler will automate the installation
 # of Ubuntu onto these nodes using these settings.
 
 # The build node name is changed in the "node type" section further down
 # in the file. This line should not be changed here.
-node 'cvf2-server-d1' inherits master-node {
+node 'build-node' inherits master-node {
 
-# This block defines the control server. Replace "control-server" with the 
-# host name of your OpenStack controller, and change the "mac" to the MAC 
-# address of the boot interface of your OpenStack controller. Change the 
+# This block defines the control server. Replace "control-server" with the
+# host name of your OpenStack controller, and change the "mac" to the MAC
+# address of the boot interface of your OpenStack controller. Change the
 # "ip" to the IP address of your OpenStack controller.  The power_address
 # parameter specifies the address to use for device power management,
 # power_user and power_password specify the login credentials to use for
@@ -290,49 +351,88 @@ node 'cvf2-server-d1' inherits master-node {
 # mode or 'ucs' for C-series or B-series UCS devices managed by UCSM.
 
   cobbler_node { "control01":
-    mac            => "90:e2:ba:0d:27:80",
+    mac            => "A4:4C:11:13:8B:D2",
     ip             => $controller01_ip,
-    power_address  => "192.168.2.97",
+    power_address  => "192.168.220.2",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "control02":
-    mac            => "90:e2:ba:0f:6c:64",
+    mac            => "A4:4C:11:13:8B:1A",
     ip             => $controller02_ip,
-    power_address  => "192.168.2.98",
+    power_address  => "192.168.220.3",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "control03":
-    mac            => "90:e2:ba:0f:6b:7c",
+    mac            => "A4:4C:11:13:5E:5C",
     ip             => $controller03_ip,
-    power_address  => "192.168.2.99",
+    power_address  => "192.168.220.13",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
-# This block defines the first compute server. Replace "compute-server01" 
+
+# This block defines the compute server. Replace "compute-server01"
 # with the host name of your first OpenStack compute node (note: the hostname
 # should be in all lowercase letters due to a limitation of Puppet; refer to
-# http://projects.puppetlabs.com/issues/1168), and change the "mac" to the 
-# MAC address of the boot interface of your first OpenStack compute node. 
+# http://projects.puppetlabs.com/issues/1168), and change the "mac" to the
+# MAC address of the boot interface of your first OpenStack compute node.
 # Change the "ip" to the IP address of your first OpenStack compute node.
 
+# Begin compute node
   cobbler_node { "compute01":
-    mac            => "90:e2:ba:0d:27:10",
-    ip             => "2.4.1.7",
-    power_address  => "192.168.2.102",
+    mac            => "A4:4C:11:13:52:80",
+    ip             => "192.168.220.51",
+    power_address  => "192.168.220.4",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "compute02":
-    mac            => "90:e2:ba:0d:26:d4",
-    ip             => "2.4.1.8",
-    power_address  => "192.168.2.103",
+    mac            => "A4:4C:11:13:A7:F1",
+    ip             => "192.168.220.52",
+    power_address  => "192.168.220.5",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "compute03":
-    mac            => "90:e2:ba:0d:26:70",
-    ip             => "2.4.1.9",
-    power_address  => "192.168.2.104",
+    mac            => "A4:4C:11:13:43:DB",
+    ip             => "192.168.220.53",
+    power_address  => "192.168.220.6",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
-# Example with UCS blade power_address with a sub-group (in UCSM), and 
+# Begin Load Balancer Nodes
+  cobbler_node { "slb01":
+    mac            => "90:e2:ba:0d:27:80",
+    ip             => "2.4.1.2",
+    power_address  => "192.168.2.97",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
+  }
+
+  cobbler_node { "slb02":
+    mac            => "90:e2:ba:0f:6c:64",
+    ip             => "2.4.1.3",
+    power_address  => "192.168.2.98",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
+  }
+
+# Example with UCS blade power_address with a sub-group (in UCSM), and
 # a ServiceProfile for power_id.
 #  cobbler_node { "compute-server01":
 #    mac => "11:22:33:44:66:77",
@@ -345,18 +445,18 @@ node 'cvf2-server-d1' inherits master-node {
 #  }
 # End compute node
 
-# Begin Load Balancer Nodes
-  cobbler_node { "slb01":
-    mac            => "90:e2:ba:0d:26:d4",
-    ip             => "2.1.4.8",
-    power_address  => "192.168.2.103",
-  }
+# Standalone cinder storage nodes. If cinder is enabled above,
+# it is automatically installed on all compute nodes. The below definition
+# allows the addition of cinder volume only nodes.
+# cobbler_node { "cinder-storage1":
+# mac => "11:22:33:44:55:66",
+# ip => "192.168.242.22",
+# power_address => "192.168.242.122",
+# power_user => "admin",
+# power_password => "password"
+# power_type => "ipmitool"
+# }
 
-  cobbler_node { "slb02":
-    mac            => "90:e2:ba:0d:26:70",
-    ip             => "2.1.4.9",
-    power_address  => "192.168.2.104",
-  }
 
 ### Repeat as needed ###
 # Make a copy of your compute node block above for each additional OpenStack
@@ -364,24 +464,38 @@ node 'cvf2-server-d1' inherits master-node {
 # the host name, mac, ip, and power settings for each node.
 
 # This block defines the first swift proxy server. Replace "swift-server01"
-# with the host name of your first OpenStack swift proxy node (note: 
+# with the host name of your first OpenStack swift proxy node (note:
 # the hostname should be in all lowercase letters due to a limitation of
 # Puppet; refer to http://projects.puppetlabs.com/issues/1168), and change
 # the "mac" to the MAC address of the boot interface of your first OpenStack
 # swift proxy node.  Change the "ip" to the IP address of your first
 # OpenStack swift proxy node.
 
+# Begin swift proxy node
+#  cobbler_node { "swift-proxy01":
+#    mac => "11:22:33:aa:bb:cc",
+#    ip => "192.168.242.179",
+#    power_address  => "192.168.242.12"
+#  }
+
   cobbler_node { "swiftproxy01":
-    mac            => "90:e2:ba:0d:26:88",
-    ip             => "2.4.1.5",
-    power_address  => "192.168.2.100",
+    mac            => "A4:4C:11:13:3D:07",
+    ip             => $swiftproxy01_public_net_ip,
+    power_address  => "192.168.220.7",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "swiftproxy02":
-    mac            => "90:e2:ba:0d:27:9c",
-    ip             => "2.4.1.6",
+    mac            => "A4:4C:11:13:44:93",
+    ip             => $swiftproxy02_public_net_ip,
     power_address  => "192.168.220.8",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
+
 
 # This block defines the first swift storage server. Replace "swift-storage01"
 # with the host name of your first OpenStack swift storage node (note: the
@@ -392,30 +506,39 @@ node 'cvf2-server-d1' inherits master-node {
 # swift storage node.
 
   cobbler_node { "swift01":
-    mac            => "A4:4C:11:13:B9:8E",
-    ip             => "192.168.220.71",
-    power_address  => "192.168.220.10",
+    mac            => "990:e2:ba:0d:26:88",
+    ip             => "2.4.1.5",
+    power_address  => "192.168.2.99",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "swift02":
-    mac            => "A4:4C:11:13:B9:82",
-    ip             => "192.168.220.72",
-    power_address  => "192.168.220.11",
+    mac            => "90:e2:ba:0d:27:9c",
+    ip             => "2.4.1.6",
+    power_address  => "192.168.2.100",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
   cobbler_node { "swift03":
-    mac            => "A4:4C:11:13:B9:8D",
-    ip             => "192.168.220.73",
-    power_address  => "192.168.220.12",
+    mac            => "90:e2:ba:0d:27:10",
+    ip             => "2.4.1.7",
+    power_address  => "192.168.2.101",
+    power_user     => 'admin',
+    power_password => 'password',
+    power_type     => 'ipmitool',
   }
 
 ### Repeat as needed ###
 # Make a copy of your swift storage node block above for each additional
-# node in your swift cluster and paste the copy in this section. Be sure 
+# node in your swift cluster and paste the copy in this section. Be sure
 # to change the host name, mac, ip, and power settings for each node.
 
 ### this block defines the ceph monitor nodes
-### you will need to add a node type for each addtional mon node
+### you will need to add a node type for each additional mon node
 ### eg ceph-mon02, etc. This is due to their unique id requirements
 #  cobbler_node { "ceph-mon01":
 #    mac           => "11:22:33:cc:bb:aa",
@@ -436,7 +559,7 @@ node 'cvf2-server-d1' inherits master-node {
 
 ### Node types ###
 # These lines specify the host names in your OpenStack cluster and what the
-# function of each host is.  ip_address should be the same as what is
+# function of each host is.  internal_ip should be the same as what is
 # specified as "ip" in the OpenStack node definitions above.
 # This sets the IP for the private(internal) interface of controller nodes
 # (which is predefined already in $controller_node_internal, and the internal
@@ -451,116 +574,136 @@ node 'cvf2-server-d1' inherits master-node {
 # Change build_server to the host name of your build node.
 # Note that the hostname should be in all lowercase letters due to a
 # limitation of Puppet (refer to http://projects.puppetlabs.com/issues/1168).
-node build-os inherits build-node { }
+node cvf2-server-d1 inherits build-node { }
+
+# The following are definitions for two server load-balancer nodes.
+# Change the names to the hostname of your server load-balancer nodes.
+# In our example, slb01 is active (i.e. 'MASTER') for the controller node
+# cluster and standby (i.e. 'BACKUP') for the swift proxy cluster and
+# slb02 is the reverse.
+node 'slb01' inherits base {
+  class {'load-balancer':
+    controller_state        => 'MASTER',
+    swift_proxy_state       => 'BACKUP',
+  }
+}
+
+node 'slb02' inherits base {
+  class {'load-balancer':
+    controller_state        => 'BACKUP',
+    swift_proxy_state       => 'MASTER',
+  }
+}
 
 # Change control-server to the host name of your control node.  Note that the
 # hostname should be in all lowercase letters due to a limitation of Puppet
 # (refer to http://projects.puppetlabs.com/issues/1168).
-
-
-node 'slb01' inherits base {
-    class {'load-balancer':
-        controller_state     => 'MASTER',
-        swift_proxy_state    => 'BACKUP',
-    }
-}
-
-
-node 'slb02' inherits base {
-    class {'load-balancer':
-        controller_state     => 'BACKUP',
-        swift_proxy_state    => 'MASTER',
-    }
-}
-
-
 node 'control01' inherits os_base {
-
   class { 'control':
+    # Enable High Availability in Core.pp
+    enable_ha               => true,
     # Addressing and interface information
-    enable_ha                     => true,
-    internal_address              => $controller01_ip,
-    tunnel_ip                     => $controller01_ip,
+    internal_address        => $controller01_ip,
     # ***VERY IMPORTANT*** galera_master_ip should be set to false 
     # if this node is the 1st node to join the Galera cluster.
     # When the Galera cluster is functioning, change from false to 
     # the IP of a running node in the cluster.
     galera_master_ip        => false,
+#    galera_master_ip        => $controller02_ip,
     # Configures the Keystone Swift Endpoints.
     # Only needed on 1 controller in the cluster.
     keystone_swift_endpoint => true,
   }
 }
 
-# Change control_server to the host name of your control node
 node 'control02' inherits os_base {
-
   class { 'control':
-    enable_ha        => true,
+    # Enable High Availability in Core.pp
+    enable_ha               => true,
     # Addressing and interface information
-    internal_address       => $controller02_ip,
-    tunnel_ip              => $controoler02_ip,
+    internal_address        => $controller02_ip,
     # ***VERY IMPORTANT*** galera_master_ip should be set to false 
     # if this node is the 1st node to join the Galera cluster.
     # When the Galera cluster is functioning, change from false to 
     # the IP of a running node in the cluster.
-    galera_master_ip => $controller01_ip,
+    galera_master_ip        => $controller01_ip,
+    # Configures the Keystone Swift Endpoints.
+    # Only needed on 1 controller in the cluster.
+    keystone_swift_endpoint => false,
   }
 }
 
-# Change control_server to the host name of your control node
 node 'control03' inherits os_base {
-
   class { 'control':
+    # Enable High Availability in Core.pp
+    enable_ha               => true,
     # Addressing and interface information
-    enable_ha        => true,
-    internal_address       => $controller03_ip,
-    tunnel_ip       => $controller03_ip,
-    # ***VERY IMPORTANT*** galera_master_ip should be set to false 
+    internal_address        => $controller03_ip,
+    # ***VERY IMPORTANTTANT*** galera_master_ip should be set to false 
     # if this node is the 1st node to join the Galera cluster.
     # When the Galera cluster is functioning, change from false to 
     # the IP of a running node in the cluster.
-    galera_master_ip => $controller01_ip,
+    galera_master_ip        => $controller01_ip,
+    # Configures the Keystone Swift Endpoints.
+    # Only needed on 1 controller in the cluster.
+    keystone_swift_endpoint => false,
   }
 }
 
-# Change the following node definitions to the hostname of your compute nodes.
+# Change compute-server01 to the host name of your first compute node.
 # Note that the hostname should be in all lowercase letters due to a
 # limitation of Puppet (refer to http://projects.puppetlabs.com/issues/1168).
-# Change compute_server01 to the host name of your first compute node
+# If you want to run a dhcp agent on the compute node, uncomment the
+# 'enable_dhcp_agent => true' line below.
 node 'compute01' inherits os_base {
-
   class { compute:
-    ip_address => '2.4.1.7',
+    enable_ha   => true, 
+    internal_ip => '192.168.220.51',
   }
 }
 
 node 'compute02' inherits os_base {
-
   class { compute:
-    ip_address => '2.4.1.8',
+    enable_ha   => true,
+    internal_ip => '192.168.220.52',
   }
 }
 
 node 'compute03' inherits os_base {
-
   class { compute:
-    ip_address => '2.4.1.9',
+    enable_ha   => true,
+    internal_ip => '192.168.220.53',
   }
 }
 
 ### Repeat as needed ###
-# Copy the compute-server01 line above and paste a copy here for each 
+# Copy the compute-server01 line above and paste a copy here for each
 # additional OpenStack node in your cluster. Be sure to replace the
-# 'compute-server01' parameter with the correct host name for each 
+# 'compute-server01' parameter with the correct host name for each
 # additional node.
+
+# Defining cinder storage nodes is only necessary if you want to run
+# cinder volume servers aside from those already on the compute nodes. To
+# do so, create a node entry for each cinder-volume node following this model.
+#node 'cinder-volume01' inherits os_base {
+#  class { 'cinder_node': }
+  # the volume class can be changed to different drivers (eg iscsi, rbd)
+  # if you are targeting multiple backends using different driver on different
+  # hosts, you will need to explicitly define your storage nodes
+
+  # if you are using iscsi as your storage type, uncomment the following class
+  #   and use a facter readable address for the interface that iscsi should use
+  #   eg. $::ipaddress, or for a specific interface $::ipaddress_eth0 etc.
+  #class { 'cinder::volume::iscsi':
+  #  iscsi_ip_address => $::ipaddress,
+  #}
+#}
 
 # Swift Proxy
 # Adjust the value of swift_local_net_ip to match the IP address
 # of your first Swift proxy node.  It is generally not necessary
 # to modify the value of keystone_host, as it will default to the
 # address of your control node.
-
 node 'swiftproxy01' inherits os_base {
 
   network_config { "$::storage_interface":
@@ -620,7 +763,7 @@ node 'swiftproxy02' inherits os_base {
     memcached_listen_ip    => $swiftproxy02_local_net_ip,
     keystone_host          => $controller_cluster_vip,
     swift_admin_user       => $swift_user,
-    swift_user_password    => $admin_password,
+    swift_user_password    => $swift_password,
     swift_hash_suffix      => $swift_hash,
   }
 }
@@ -630,7 +773,7 @@ node 'swiftproxy02' inherits os_base {
 # your first Swift storage node.  Modify the storage_devices parameter
 # to set the list of disk devices to be formatted with XFS and used
 # for Swift storage.
-
+#node 'swift-storage01' inherits os_base {
 node 'swift01' inherits os_base {
 
   network_config { "$::storage_interface":
@@ -687,7 +830,7 @@ node 'swift02' inherits os_base {
     byte_size          => '2048',
     swift_hash_suffix  => $swift_hash,
   }
-}  
+}
 
 node 'swift03' inherits os_base {
 
@@ -721,58 +864,90 @@ node 'swift03' inherits os_base {
 ### Repeat as needed ###
 # Copy the swift-storage01 node definition above and paste a copy here for
 # each additional OpenStack swift storage node in your cluster.  Modify
-# the node name, swift_local_net_ip, and storage_devices parameters 
+# the node name, swift_local_net_ip, and storage_devices parameters
 # accordingly.
 
 # Ceph storage
 # For each OSD you need to specify the public address and the cluster address
-#   the public interface is used by the ceph client to access the service
-#   the cluster (management) interface can be the same as the public address if you have only
-#     one interface. It's recommended you have a separate management interface.
-#     This will offload replication and heartbeat from the public network
-# ceph MONs must be configured so a quorum can be obtained. You can have one mon, and three mons,
-#   but not two, since no quorum can be established. No even number of MONs should be used.
+# the public interface is used by the ceph client to access the service
+# the cluster (management) interface can be the same as the public address
+# if you have only one interface. It's recommended you have a separate 
+# management interface.  This will offload replication and heartbeat from 
+# the public network.
+# When reloading an OSD, the disk seems to retain some data that needs to 
+# be wiped clean. Before reloading the node, you MUST remove the OSD from 
+# the running configuration. Instructions on doing so are located here:
+#  http://ceph.com/docs/master/rados/operations/add-or-rm-osds/#removing-osds-manual
+# Once complete, reinstall the node. Then, before running the puppet agent 
+# on a reloaded OSD node, format the filesystem to be used by the OSD. Then
+# delete the partition, delete the partition table, then dd /dev/zero to the
+# disk itself, for a reasonable count to clear any remnant disk info.
+# ceph MONs must be configured so a quorum can be obtained. You can have 
+# one mon, and three mons, but not two, since no quorum can be established.
+# No even number of MONs should be used.
 
 # Configuring Ceph
-# 
-# ceph_auth_type: you can specify cephx or none, but please don't actually use none.
-# ceph_monitor_fsid: ceph needs a cluster fsid. you can generate this on the CLI by running 'uuidgen -r'
-# ceph_monitor_secret: mon hosts need a secret. This must be generated on a host with ceph already installed.
-#   create one by running 'ceph-authtool --create /path/to/keyring --gen-key -n mon.:'
+#
+# ceph_auth_type: you can specify cephx or none, but please don't actually 
+# use none.
+#
+# ceph_monitor_fsid: ceph needs a cluster fsid. you can generate this on the
+# CLI by running 'uuidgen -r'
+#
+# ceph_monitor_secret: mon hosts need a secret. This must be generated on
+# a host with ceph already installed.  Create one by running 
+# 'ceph-authtool --create /path/to/keyring --gen-key -n mon.:'
+#
 # ceph_monitor_port: the port that ceph MONs will listen on. 6789 is default.
-# ceph_monitor_address: corresponds to the facter IP info. Change this to reflect your public interface.
-# ceph_cluster_network: the network mask of your cluster (management) network (can be identical to the public netmask).
+#
+# ceph_monitor_address: corresponds to the facter IP info. Change this to
+# reflect your public interface.
+#
+# ceph_cluster_network: the network mask of your cluster (management)
+# network (can be identical to the public netmask).
+#
 # ceph_public_network: the network mask of your public network.
-# ceph_public_interface: the name of your public interface.
-#   (todo: fix conflict when using the same interface specified in $::external_interface. this is due to our late_command.)
-# ceph_cluster_interface: the name of your public interface (can be identical to the public interface).
-#   (todo: fix conflict when using the same interface specified in $::external_interface. this is due to our late_command.)
+#
 # ceph_release: specify the release codename to install the respective release.
-
+#
+# cinder_rbd_user: the user configured in ceph to allow cinder rwx access
+# to the volumes pool.  This currently requires the name 'volumes'. Do not
+# change it.
+#
+# cinder_rbd_pool: the name of the pool in ceph for cinder to use for
+# block device creation.  This currently requires the name 'volumes'. Do 
+# not change it.
+#
+# cinder_rbd_secret_uuid: the uuid secret to allow cinder to communicate
+# with ceph.  This MUST be left as the string 'REPLACEME'. The actual UUID 
+# is unique and is generated only after ceph is installed. It is injected
+# during the puppet run.
 
 #$ceph_auth_type         = 'cephx'
 #$ceph_monitor_fsid      = 'e80afa94-a64c-486c-9e34-d55e85f26406'
 #$ceph_monitor_secret    = 'AQAJzNxR+PNRIRAA7yUp9hJJdWZ3PVz242Xjiw=='
 #$ceph_monitor_port      = '6789'
-#$ceph_monitor_address   = $ipaddress_eth2
+#$ceph_monitor_address   = $::ipaddress
 #$ceph_cluster_network   = '192.168.242.0/24'
 #$ceph_public_network    = '192.168.242.0/24'
-#$ceph_public_interface  = 'eth2'
-#$ceph_cluster_interface = 'eth2'
 #$ceph_release           = 'cuttlefish'
+#$cinder_rbd_user        = 'admin'
+#$cinder_rbd_pool        = 'volumes'
+#$cinder_rbd_secret_uuid = 'REPLACEME'
 
-# this global path needs to be uncommented for puppet-ceph to work.
-# uncomment and define the proxy server if your nodes don't have direct
-# access to the internet. this is needed to obtain the latest ceph packages..
+# This global path needs to be uncommented for puppet-ceph to work.
+# Uncomment and define the proxy server if your nodes don't have direct
+# access to the internet. This is due to apt needing to run a wget.
 #Exec {
 #  path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-#  environment => 'https_proxy=http://proxy-rtp-1.cisco.com:8080',
+#  environment => "https_proxy=$::proxy",
 #}
 
 
 #node 'ceph-mon01' inherits os_base {
   # only mon0 should export the admin keys.
-  # This means the following if statement is not needed on the additional mon nodes.
+  # This means the following if statement is not needed on the additional
+  #  mon nodes.
 #  if !empty($::ceph_admin_key) {
 #  @@ceph::key { 'admin':
 #    secret       => $::ceph_admin_key,
@@ -791,7 +966,8 @@ node 'swift03' inherits os_base {
 #  class { 'ceph::apt::ceph': release => $::ceph_release }
 #}
 
-# This is the OSD node definition example. You will need to specify the public and cluster IP for each unique node.
+# This is the OSD node definition example. You will need to specify the
+# public and cluster IP for each unique node.
 
 #node 'ceph-osd01' inherits os_base {
 #  class { 'ceph::conf':
@@ -822,21 +998,21 @@ node 'swift03' inherits os_base {
 ### Advanced Users Configuration ###
 # These four settings typically do not need to be changed.
 # In the default deployment, the build node functions as the DNS and static
-# DHCP server for the OpenStack nodes. These settings can be used if 
+# DHCP server for the OpenStack nodes. These settings can be used if
 # alternate configurations are needed.
 $node_dns       = "${cobbler_node_ip}"
-$ip 		= "${cobbler_node_ip}"
-$dns_service 	= "dnsmasq"
-$dhcp_service 	= "dnsmasq"
-$time_zone      = "UTC"
+$ip             = "${cobbler_node_ip}"
+$dns_service    = 'dnsmasq'
+$dhcp_service   = 'dnsmasq'
+$time_zone      = 'UTC'
 
 # Enable network interface bonding. This will only enable the bonding module
 # in the OS. It won't actually bond any interfaces. Edit the networking
 # interfaces template to set up interface bonds as required after setting
 # this to true should bonding be required.
-#$interface_bonding = 'true' 
+#$interface_bonding = 'true'
 
-# Enable ipv6 router edvertisement.
+# Enable ipv6 router advertisement.
 #$ipv6_ra = '1'
 
 # Adjust Quantum quotas
@@ -864,6 +1040,33 @@ $quantum_quota_security_group_rule = '100'
 # a host to fail connecting before banning it.
 $max_connect_errors = '10'
 
+### modify disk partitioning ###
+# set expert_disk to true if you want to specify partition sizes,
+#  of which root and var are currently supported
+# if you do not want a separate /var from /, set enable_var to false
+# if you do not want extra disk space set aside in an LVM volume
+#  then set enable_vol_space to false (you likely want this true if you
+#  want to use iSCSI CINDER on the compute nodes, and you must set
+#  expert_disk to true to enable this.
+
+$expert_disk           = true
+$root_part_size        = 65536
+$var_part_size         = 1048576
+$enable_var            = true
+$enable_vol_space      = true
+
+# Select vif_driver and firewall_driver for quantum and quantum plugin
+# These two parameters can be changed if necessary to support more complex
+# network topologies as well as some Quantum plugins.
+# These default values are required for Quantum security groups to work
+# when using Quantum with OVS.
+$libvirt_vif_driver      = 'nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver'
+$quantum_firewall_driver = 'quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'
+# If you don't want Quantum security groups when using OVS, comment out the
+# libvirt_vif_driver line above and uncomment the libvirt_vif_driver below
+# instead
+# $libvirt_vif_driver = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver'
+
 ### Puppet Parameters ###
 # These settings load other puppet components. They should not be changed.
 import 'cobbler-node'
@@ -873,5 +1076,5 @@ import 'core'
 ## Simplifies debug when necessary.
 
 node default {
-  notify{"Default Node: Perhaps add a node definition to site.pp": }
+  notify{'Default Node: Perhaps add a node definition to site.pp': }
 }
