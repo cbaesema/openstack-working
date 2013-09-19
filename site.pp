@@ -26,7 +26,7 @@ $location = "http://openstack-repo.cisco.com/openstack"
 # Change the following to the host name you have given your build node.
 # This name should be in all lower case letters due to a Puppet limitation
 # (refer to http://projects.puppetlabs.com/issues/1168).
-$build_node_name        = 'build-server'
+$build_node_name        = 'localhost'
 
 ########### NTP Configuration ############
 # Change this to the location of a time server in your organization accessible
@@ -193,19 +193,19 @@ $glance_backend      = 'file'
 
 # Set this option to true to use RBD-backed glance. This will store
 # your glance images in your ceph cluster.
-# $glance_ceph_enabled = true
-# $glance_ceph_user    = 'admin'
-# $glance_ceph_pool    = 'images'
+#$glance_ceph_enabled = true
+#$glance_ceph_user    = 'admin'
+#$glance_ceph_pool    = 'images'
 
 # If you are using a controller node as a ceph MON node then you
 #   need to also set this to true to enable glance on ceph.
 #   Also ensure that the controller node stanze contains the mon
 #   class declarations.
-# $controller_has_mon = true
+$controller_has_mon = true
 
 # If you are using compute hosts as ceph OSD servers then you
 #   need to set this to true
-# $osd_on_compute = true
+$osd_on_compute = true
 
 ###### Quantum plugins #######
 # Use either OVS (the default) or Cisco quantum plugin:
@@ -459,26 +459,30 @@ node build-server inherits build-node { }
 # hostname should be in all lowercase letters due to a limitation of Puppet
 # (refer to http://projects.puppetlabs.com/issues/1168).
 node 'control-server' inherits os_base {
-  class { 'control':
-    tunnel_ip   => '192.168.1.3',
+  class { 'allinone':}
+  class {'coe::ceph::combined':
+      iscompute => true,
   }
-
   # If you want to run ceph mon0 on your controller node, uncomment the 
   #   following block. Be sure to read all additional ceph-related 
   #   instruction in this file.
   # only mon0 should export the admin keys.
   # This means the following if statement is not needed on the additional
   #  mon nodes.
-  #  if !empty($::ceph_admin_key) {
-  #  @@ceph::key { 'admin':
-  #    secret       => $::ceph_admin_key,
-  #    keyring_path => '/etc/ceph/keyring',
-  #  }
-  #  }
+    if !empty($::ceph_admin_key) {
+    @@ceph::key { 'admin':
+      secret       => $::ceph_admin_key,
+      keyring_path => '/etc/ceph/keyring',
+    }
+    }
+
+
+  ceph::osd::device { '/dev/sdb': }
+
 
   # each MON needs a unique id, you can start at 0 and increment as needed.
-  #  class {'ceph_mon': id => 0 }
-  #  class { 'ceph::apt::ceph': release => $::ceph_release }
+    class {'ceph_mon': id => 0 }
+    class { 'ceph::apt::ceph': release => $::ceph_release }
 
 }
 
