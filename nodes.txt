@@ -9,3 +9,4 @@ ceph-mon01             9
 ceph-osd01             10
 ceph-osd02             11
 ceph-osd03             12
+allinone               13
