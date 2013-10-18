@@ -112,7 +112,7 @@ for line in lines:
   vals = line.strip().split()
   if vals[0].strip() == sys.argv[1]:
       print "updating apt sources.list"
-      os.system('/usr/sbin/dmsetup')
+#      os.system('/usr/sbin/dmsetup')
       copy_apt_sources()
       print "writing hosts file"
       write_hosts_file()
@@ -121,7 +121,7 @@ for line in lines:
       print "setting host name " + vals[0].strip()
       set_hostname(vals[0].strip())
       print "create runpuppt script"
-      create_runpuppet()
+#      create_runpuppet()
 #      if is_build(vals[0].strip()):
 #          print "copy manifests and templates"
 #          copy_manifests()    
