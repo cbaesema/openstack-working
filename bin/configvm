@@ -72,17 +72,13 @@ def set_hostname(hostname):
 
 
 def create_runpuppet():
-    lines = open(node_file).readlines()
-    for line in lines:
-        if line.strip().startswith('build'):
-            buildserver = '192.168.1.2'
-            content = '#!/bin/bash' + "\n"
-            content = content + 'export build_server_ip=' + buildserver + "\n"
-            content = content + 'bash /opt/openstack-installer/install-scripts/setup.sh '
-            fp = open('/usr/sbin/runpuppet','w') 
-            fp.write(content + "\n")
-            fp.close()
-            os.system('chmod a+x /usr/sbin/runpuppet')
+    content = '#!/bin/bash' + "\n"
+    content = content + 'puppet apply -v --debug /opt/openstack-installer/manifests/setup.pp | tee /opt/setuprun.log' + "\n"
+    content = content + 'puppet apply -v --debug /opt/openstack-installer/manifests/site.pp | tee /opt/puppetrun.log'
+    fp = open('/usr/sbin/runpuppet','w') 
+    fp.write(content + "\n")
+    fp.close()
+    os.system('chmod a+x /usr/sbin/runpuppet')
 
 
 
@@ -116,6 +112,7 @@ for line in lines:
   vals = line.strip().split()
   if vals[0].strip() == sys.argv[1]:
       print "updating apt sources.list"
+      os.system('/usr/sbin/dmsetup')
       copy_apt_sources()
       print "writing hosts file"
       write_hosts_file()
