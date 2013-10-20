@@ -121,7 +121,7 @@ for line in lines:
       print "setting host name " + vals[0].strip()
       set_hostname(vals[0].strip())
       print "create runpuppt script"
-#      create_runpuppet()
+      create_runpuppet()
 #      if is_build(vals[0].strip()):
 #          print "copy manifests and templates"
 #          copy_manifests()    
