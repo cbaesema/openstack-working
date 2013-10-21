@@ -47,4 +47,4 @@ cd /root/openstack-installer
 cp -rf data /etc/puppet
 cp -rf modules /usr/share/puppet
 cp -rf manifests/* /etc/puppet/manifests
-
+cp /opt/openstack-working/user.common.yaml /etc/puppet/data/hiera_data
