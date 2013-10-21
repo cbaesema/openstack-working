@@ -4,7 +4,7 @@
 # It requires that you provide it with the ip address
 # of your build server
 export build_server_ip=192.168.1.13
-export openstack_version='havana'
+export openstack_version='havana-proposed'
 # bash setup.sh
 #
 set -u
