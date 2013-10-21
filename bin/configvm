@@ -73,6 +73,7 @@ def set_hostname(hostname):
 
 def create_runpuppet():
     content = '#!/bin/bash' + "\n"
+    content = content + 'export openstack_version="havana"' + "\n"
     content = content + 'puppet apply -v /etc/puppet/manifests/setup.pp | tee /opt/setuprun.log' + "\n"
     content = content + 'puppet apply -v /etc/puppet/manifests/site.pp | tee /opt/puppetrun.log'
     fp = open('/usr/sbin/runpuppet','w') 
