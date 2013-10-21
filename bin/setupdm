@@ -48,3 +48,4 @@ cp -rf data /etc/puppet
 cp -rf modules /usr/share/puppet
 cp -rf manifests/* /etc/puppet/manifests
 cp /opt/openstack-working/user.common.yaml /etc/puppet/data/hiera_data
+cp /opt/openstack-working/config.yaml /etc/puppet/data
