@@ -1,6 +1,6 @@
 domain_name: domain.name
 ntp_servers:
-  - time-server.domain.name
+  - ntp.ubuntu.com
 
 # node addresses
 build_node_name: build-server
