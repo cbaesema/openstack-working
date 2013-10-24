@@ -5,4 +5,4 @@ apt_mirror: 'us.archive.ubuntu.com'
 domain:     'domain.name'
 verbose:    false
 operatingsystem: ubuntu
-scenario: ha
+scenario: full_ha
