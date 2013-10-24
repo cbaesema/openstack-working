@@ -23,3 +23,12 @@ address 192.168.2.{IP}
 netmask 255.255.255.0
 network 192.168.2.0
 broadcast 192.168.2.255
+
+
+auto eht3
+iface eth3 inet static
+address 192.168.3.{IP}
+netmask 255.255.255.0
+network 192.168.3.0
+broadcast 192.168.3.255
+
