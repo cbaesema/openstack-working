@@ -55,20 +55,33 @@ def set_hostname(hostname):
     os.system('hostname ' + hostname)
 
 
+#def create_runpuppet():
+#    lines = open(node_file).readlines()
+#    for line in lines:
+#        if line.strip().startswith('build'):
+#            buildserver = line.split()[0].strip()
+#            content = '#!/bin/bash' + "\n"
+#            content = content + 'puppet agent --server ' + buildserver + '.'
+#            content = content + get_domain()
+#            content = content + ' --waitforcert 60 --test --pluginsync '
+#            content = content + '--debug | tee /opt/puppetrun.log'
+#            fp = open('/usr/sbin/runpuppet','w') 
+#            fp.write(content + "\n")
+#            fp.close()
+#            os.system('chmod a+x /usr/sbin/runpuppet')
+
+
 def create_runpuppet():
-    lines = open(node_file).readlines()
-    for line in lines:
-        if line.strip().startswith('build'):
-            buildserver = line.split()[0].strip()
-            content = '#!/bin/bash' + "\n"
-            content = content + 'puppet agent --server ' + buildserver + '.'
-            content = content + get_domain()
-            content = content + ' --waitforcert 60 --test --pluginsync '
-            content = content + '--debug | tee /opt/puppetrun.log'
-            fp = open('/usr/sbin/runpuppet','w') 
-            fp.write(content + "\n")
-            fp.close()
-            os.system('chmod a+x /usr/sbin/runpuppet')
+    content = '#!/bin/bash' + "\n"
+    content = content + 'puppet apply -v /etc/puppet/manifests/setup.pp | tee /opt/setuprun.log' + "\n"
+    content = content + 'puppet apply -v /etc/puppet/manifests/site.pp | tee /opt/puppetrun.log'
+    fp = open('/usr/sbin/runpuppet','w') 
+    fp.write(content + "\n")
+    fp.close()
+    os.system('chmod a+x /usr/sbin/runpuppet')
+
+
+
 
 #is build server
 def is_build(hostname):
@@ -84,9 +97,10 @@ def copy_apt_sources():
 
 #copy manifest and template files
 def copy_manifests():
-    os.system('cp /opt/grizzly-manifests/manifests/* /etc/puppet/manifests') 
-    os.system('cp /opt/grizzly-manifests/templates/* /etc/puppet/templates')
-    os.system('cp ' + base_dir + "/site.pp /etc/puppet/manifests")
+    pass
+#    os.system('cp /opt/grizzly-manifests/manifests/* /etc/puppet/manifests') 
+#    os.system('cp /opt/grizzly-manifests/templates/* /etc/puppet/templates')
+#    os.system('cp ' + base_dir + "/site.pp /etc/puppet/manifests")
 
 if not len(sys.argv) > 1:
     print "node name requred example: configvm build-server01"
@@ -98,18 +112,19 @@ for line in lines:
   vals = line.strip().split()
   if vals[0].strip() == sys.argv[1]:
       print "updating apt sources.list"
+#      os.system('/usr/sbin/dmsetup')
       copy_apt_sources()
       print "writing hosts file"
       write_hosts_file()
       print "creating ethernet interfaces"
       create_interfaces(vals[1])
-      print "ssetting host name " + vals[0].strip()
+      print "setting host name " + vals[0].strip()
       set_hostname(vals[0].strip())
       print "create runpuppt script"
       create_runpuppet()
-      if is_build(vals[0].strip()):
-          print "copy manifests and templates"
-          copy_manifests()    
+#      if is_build(vals[0].strip()):
+#          print "copy manifests and templates"
+#          copy_manifests()    
     
       print "update complete"
       sys.exit()
