@@ -1,0 +1,109 @@
+#
+# this emulates provided user data
+#
+
+ntp_servers:
+  - build-server.domain.name
+
+build_node_name: build-server.domain.name
+domain_name: domain.name
+
+coe::base::controller_hostname: node01
+
+# These are controller VIPs
+controller_internal_address: 192.168.255.40
+controller_public_address: 192.168.255.40
+controller_admin_address: 192.168.255.40
+
+# these are swift proxy VIPs
+swift_internal_address: 192.168.255.60
+swift_public_address: 192.168.255.60
+swift_admin_address: 192.168.255.60
+
+# maps to ovs local_ip from the gre data mappings
+internal_ip: "%{ipaddress_eth0}"
+external_interface: eth1
+public_interface: eth1
+private_interface: eth0
+
+# Swift networking parameters
+swift_storage_interface: eth0.222
+swift_storage_netmask: 255.255.255.0
+swift_proxy_net_ip: "%{ipaddress_eth0}"
+swift_local_net_ip: "%{ipaddress_eth0_222}"
+
+nova::compute::vncserver_proxyclient_address: "%{ipaddress_eth0}"
+
+# user data for individual passwords
+cinder_db_password: cinder_pass
+glance_db_password: glance_pass
+keystone_db_password: keystone_db_pass
+nova_db_password: nova_pass
+network_db_password:   quantum_pass
+database_root_password: mysql_db_pass
+cinder_service_password: cinder_pass
+glance_service_password: glance_pass
+nova_service_password: nova_pass
+admin_password: Cisco123
+admin_token: keystone_admin_token
+network_service_password: quantum_pass
+rpc_password: openstack_rabbit_password
+#metadata_shared_secret: metadata_shared_secret,
+metadata_shared_secret: false
+horizon_secret_key: super_secret
+swift_service_password: swift_pass
+swift_hash: swift_secret
+galera::server::wsrep_sst_password: wsrep_password
+galera::monitor::monitor_password: monitor_pass
+glance::backend::swift::swift_store_key: swift_pass
+
+# rabbitmq settings
+rabbitmq::server::config_mirrored_queues: true
+rabbitmq::server::config_cluster: true
+rabbitmq::server::node_ip_address: "%{ipaddress_eth0}"
+
+#
+# HA connections
+#
+controller_names:
+  - node01
+  - node02
+  - node03
+openstack-ha::load-balancer::controller_ipaddresses:
+  - 10.0.2.15
+  - 10.0.2.16
+  - 10.0.2.17
+openstack-ha::load-balancer::swift_proxy_names:
+  - node01
+  - node02
+  - node03
+openstack-ha::load-balancer::swift_proxy_ipaddresses:
+  - 192.168.255.191
+  - 192.168.255.195
+  - 192.168.255.197
+nova::memcached_servers:
+  - 192.168.255.191:11211
+  - 192.168.255.195:11211
+  - 192.168.255.197:11211
+openstack::swift::proxy::swift_memcache_servers:
+  - 192.168.255.191:11211
+  - 192.168.255.195:11211
+  - 192.168.255.197:11211
+rabbit_hosts:
+  - node01:5672
+  - node02:5672
+  - node03:5672
+bind_address: "%{ipaddress_eth0}"
+
+cinder::volume::iscsi::iscsi_ip_address: "%{ipaddress_eth0}"
+
+quantum::plugins::ovs::network_vlan_ranges: physnet1:223:225
+neutron::plugins::ovs::network_vlan_ranges: physnet1:223:225
+
+openstack::swift::storage-node::storage_type: disk
+openstack::swift::storage-node::storage_devices:
+  - 'sdb'
+  - 'sdc'
+  - 'sdd'
+  - 'sde'
+  - 'sdf'
