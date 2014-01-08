@@ -10,3 +10,6 @@ ceph-osd01             10
 ceph-osd02             11
 ceph-osd03             12
 all-in-one             13
+node01                 15
+node02                 16
+node03                 17
