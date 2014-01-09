@@ -16,9 +16,9 @@ controller_public_address: 192.168.1.15
 controller_admin_address: 192.168.1.15
 
 # these are swift proxy VIPs
-swift_internal_address: 192.168.1.15
-swift_public_address: 192.168.1.15
-swift_admin_address: 192.168.1.15
+swift_internal_address: 192.168.2.15
+swift_public_address: 192.168.2.15
+swift_admin_address: 192.168.2.15
 
 # maps to ovs local_ip from the gre data mappings
 internal_ip: "%{ipaddress_eth0}"
