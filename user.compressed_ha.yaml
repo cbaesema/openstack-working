@@ -11,14 +11,14 @@ domain_name: domain.name
 coe::base::controller_hostname: node01
 
 # These are controller VIPs
-controller_internal_address: 192.168.255.40
-controller_public_address: 192.168.255.40
-controller_admin_address: 192.168.255.40
+controller_internal_address: 192.168.1.15
+controller_public_address: 192.168.1.15
+controller_admin_address: 192.168.1.15
 
 # these are swift proxy VIPs
-swift_internal_address: 192.168.255.60
-swift_public_address: 192.168.255.60
-swift_admin_address: 192.168.255.60
+swift_internal_address: 192.168.1.15
+swift_public_address: 192.168.1.15
+swift_admin_address: 192.168.1.15
 
 # maps to ovs local_ip from the gre data mappings
 internal_ip: "%{ipaddress_eth0}"
@@ -82,7 +82,7 @@ openstack-ha::load-balancer::swift_proxy_ipaddresses:
   - 10.0.2.16
   - 10.0.2.17
 nova::memcached_servers:
-  - 10.0.2.15:11211
+  - 192.168.1.15:11211
   - 10.0.2.16:11211
   - 10.0.2.17:11211
 openstack::swift::proxy::swift_memcache_servers:
