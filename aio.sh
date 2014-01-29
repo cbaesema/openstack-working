@@ -1,6 +1,6 @@
 #!/bin/bash
-hostname node01
-export scenario=compressed_ha
+hostname all-in-one
+export scenario=all_in_one
 export vendor=cisco
 export vendor_repo=cisco
 export vendor_branch=coi-development
